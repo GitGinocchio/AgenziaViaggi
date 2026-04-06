@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,6 +27,9 @@ public class Cliente {
     private String email;
     @Column(name="PREFERENZE")
     private String preferenze;
+    
+    @OneToMany(mappedBy = "cliente")
+    private List<Prenotazione> prenotazioni = new ArrayList<>();
 
     public Cliente() {}
 
@@ -32,6 +38,18 @@ public class Cliente {
         this.nome = nome;
         this.email = email;
         this.preferenze = preferenze;
+    }
+
+    public List<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setPrenotazioni(List<Prenotazione> prenotazioni) {
+        this.prenotazioni = prenotazioni;
     }
 
     public Integer getId() {

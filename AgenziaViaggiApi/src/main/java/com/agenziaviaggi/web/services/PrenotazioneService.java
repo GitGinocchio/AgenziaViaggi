@@ -1,5 +1,6 @@
 package com.agenziaviaggi.web.services;
 
+import com.agenziaviaggi.web.entities.Cliente;
 import com.agenziaviaggi.web.entities.Prenotazione;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -44,6 +45,11 @@ public class PrenotazioneService {
     }
     
     public void save(Prenotazione p) {
+        if (p.getCliente() != null && p.getCliente().getId() != null) {
+            Cliente reale = em.find(Cliente.class, p.getCliente().getId());
+            p.setCliente(reale);
+        }
+
         if (p.getId() == null) {
             em.persist(p);
         } else {

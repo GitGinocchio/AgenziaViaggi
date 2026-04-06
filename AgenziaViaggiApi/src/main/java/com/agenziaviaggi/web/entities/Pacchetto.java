@@ -1,11 +1,15 @@
 package com.agenziaviaggi.web.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -30,6 +34,9 @@ public class Pacchetto {
     private Boolean isOfferta = false;
     @Column(name="IMMAGINE")
     private String immagine;
+    
+    @OneToMany(mappedBy = "pacchetto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Servizio> servizi = new ArrayList<>();
 
     public Pacchetto(Integer id, String titolo, String descrizione, String tags, Double prezzo, String immagine) {
         this.id = id;
@@ -41,6 +48,14 @@ public class Pacchetto {
     }
 
     public Pacchetto() {}
+
+    public List<Servizio> getServizi() {
+        return servizi;
+    }
+
+    public void setServizi(List<Servizio> servizi) {
+        this.servizi = servizi;
+    }
 
     public Integer getId() {
         return id;

@@ -10,9 +10,12 @@ package com.agenziaviaggi.web.entities;
  */
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.Date;
@@ -24,23 +27,33 @@ public class Prenotazione {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
     private Integer id;
-    @Column(name="ID_CLIENTE", nullable = false)
-    private int idCliente;
-    @Column(name="ID_PACCHETTO", nullable = false)
-    private int idPacchetto;
+    //@Column(name="ID_CLIENTE", nullable = false)
+    //private int idCliente;
+    //@Column(name="ID_PACCHETTO", nullable = false)
+    //private int idPacchetto;
     @Column(name="DATA_PRENOTAZIONE")
     private Date dataPrenotazione = Date.from(Instant.now());
     @Column(name="PREZZO_PAGATO", nullable = false)
     private double prezzoPagato;
     @Column(name="STATO", nullable = false)
     private String stato = "PENDENTE";
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CLIENTE")
+    private Cliente cliente; 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PACCHETTO")
+    private Pacchetto pacchetto;
 
     public Prenotazione() {}
 
     public Prenotazione(int id, int idCliente, int idPacchetto, Date dataPrenotazione, String stato) {
         this.id = id;
-        this.idCliente = idCliente;
-        this.idPacchetto = idPacchetto;
+        //this.idCliente = idCliente;
+        //this.idPacchetto = idPacchetto;
+        this.setIdCliente(idCliente);
+        this.setIdPacchetto(idPacchetto);
         this.dataPrenotazione = dataPrenotazione;
         this.stato = stato;
     }
@@ -52,7 +65,8 @@ public class Prenotazione {
     public void setId(int id) {
         this.id = id;
     }
-
+    
+    /*
     public int getIdCliente() {
         return idCliente;
     }
@@ -60,7 +74,53 @@ public class Prenotazione {
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
+    */
+    
+    public int getIdCliente() {
+        return (cliente != null) ? cliente.getId() : 0;
+    }
+    
+    public final void setIdCliente(int idCliente) {
+        if (this.cliente == null) {
+            this.cliente = new Cliente();
+        }
+        this.cliente.setId(idCliente);
+    }
+    
+    public Integer getIdPacchetto() {
+        if (this.pacchetto == null) return null;
+        return this.pacchetto.getId();
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setPacchetto(Pacchetto pacchetto) {
+        this.pacchetto = pacchetto;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public Pacchetto getPacchetto() {
+        return pacchetto;
+    }
+    
+    public final void setIdPacchetto(int idPacchetto) {
+        if (this.pacchetto == null) {
+            this.pacchetto = new Pacchetto();
+        }
+        
+        this.pacchetto.setId(idPacchetto);
+    }
+    
+    /*
     public int getIdPacchetto() {
         return idPacchetto;
     }
@@ -68,6 +128,8 @@ public class Prenotazione {
     public void setIdPacchetto(int idPacchetto) {
         this.idPacchetto = idPacchetto;
     }
+    */
+    
 
     public Date getDataPrenotazione() {
         return dataPrenotazione;

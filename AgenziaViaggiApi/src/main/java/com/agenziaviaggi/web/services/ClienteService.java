@@ -45,9 +45,13 @@ public class ClienteService {
         }
     }
 
-    public void save(Cliente c) {
+    public void save(Cliente c) throws Exception {
         if (c.getId() == null) {
-            em.persist(c);
+            try {
+                em.persist(c);
+            } catch (Exception e) {
+                throw new Exception("Email già presente");
+            }
         } else {
             em.merge(c);
         }

@@ -1,5 +1,6 @@
 package com.agenziaviaggi.web.services;
 
+import com.agenziaviaggi.web.entities.Pacchetto;
 import com.agenziaviaggi.web.entities.Servizio;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -32,6 +33,13 @@ public class ServizioService {
     }
 
     public void save(Servizio s) {
+        // Se il client ha inviato l'ID del pacchetto tramite setIdPacchetto
+        if (s.getPacchetto() != null && s.getPacchetto().getId() != null) {
+            // Troviamo l'entità Pacchetto reale gestita dall'EntityManager
+            Pacchetto p = em.find(Pacchetto.class, s.getPacchetto().getId());
+            s.setPacchetto(p);
+        }
+
         if (s.getId() == null) {
             em.persist(s);
         } else {
