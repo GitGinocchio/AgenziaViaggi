@@ -25,11 +25,11 @@
         
         <UButton
           v-else
-          label="Prenota"
-          icon="i-lucide-plus"
+          label="Area utente"
+          icon="i-lucide-user"
           size="sm"
           class="hidden sm:flex"
-          to="/prenotazioni/new"
+          to="/"
         />
       </template>
 

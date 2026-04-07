@@ -90,7 +90,7 @@
         >
           <div class="aspect-16/10 relative overflow-hidden">
             <img 
-              :src="p.immagine || `https://source.unsplash.com/featured/?${p.destinazione},travel`" 
+              :src="p.immagine || `https://source.unsplash.com/featured/?${p.titolo},travel`" 
               class="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700" 
             />
             <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -109,7 +109,7 @@
           <div class="p-6">
             <div class="flex justify-between items-start mb-3">
               <div>
-                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ p.destinazione }}</h3>
+                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ p.titolo }}</h3>
                 <div class="flex flex-wrap gap-1 mt-2">
                   <span v-for="tag in p.tags?.split(',')" :key="tag" class="text-[10px] uppercase tracking-wider font-bold text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded">
                     {{ tag.trim() }}

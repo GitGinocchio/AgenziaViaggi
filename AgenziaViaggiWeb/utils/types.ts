@@ -1,6 +1,6 @@
 export interface Pacchetto {
   id?: number;
-  destinazione: string;
+  titolo: string;
   descrizione?: string;
   inizio?: string;
   fine?: string;

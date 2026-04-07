@@ -2,7 +2,7 @@
   <div v-if="pacchetto" class="min-h-screen bg-zinc-50/50 dark:bg-zinc-950 pb-20">
     <div class="relative h-[60vh] min-h-400px w-full overflow-hidden">
       <img 
-        :src="pacchetto.immagine || `https://source.unsplash.com/featured/?${pacchetto.destinazione},travel`" 
+        :src="pacchetto.immagine || `https://source.unsplash.com/featured/?${pacchetto.titolo},travel`" 
         class="w-full h-full object-cover"
       />
       <div class="absolute inset-0 bg-linear-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
@@ -26,7 +26,7 @@
           </div>
           
           <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4">
-            {{ pacchetto.destinazione }}
+            {{ pacchetto.titolo }}
           </h1>
           
           <div class="flex items-center gap-6 text-zinc-300 font-medium">
@@ -53,8 +53,6 @@
               {{ pacchetto.descrizione }}
             </p>
           </section>
-
-          <UDivider />
 
           <section>
             <h3 class="text-xl font-bold mb-6">Cosa è incluso</h3>
@@ -154,6 +152,6 @@ const servizi = [
 
 const handleBooking = () => {
   // Qui andrà la logica per aggiungere al carrello o andare alla pagina checkout
-  alert(`Inizializzazione prenotazione per: ${pacchetto.value?.destinazione}`);
+  alert(`Inizializzazione prenotazione per: ${pacchetto.value?.titolo}`);
 };
 </script>
