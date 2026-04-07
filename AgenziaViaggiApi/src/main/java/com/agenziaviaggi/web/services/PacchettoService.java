@@ -47,11 +47,23 @@ public class PacchettoService {
             .getResultList();
     }
 
-    public void save(Pacchetto p) {
-        if (p.getId() == null) {
-            em.persist(p);
-        } else {
-            em.merge(p);
+    public void save(Pacchetto p) throws Exception {
+        try {
+            if (p.getId() == null) {
+                em.persist(p);
+            } else {
+                em.merge(p);
+            }
+            em.flush();
+        } catch (Exception e) {
+            throw new Exception("Errore nel salvataggio: l'email potrebbe essere già presente.");
+        }
+    }
+    
+    public void delete(Integer id) {
+        Pacchetto c = em.find(Pacchetto.class, id);
+        if (c != null) {
+            em.remove(c);
         }
     }
 }

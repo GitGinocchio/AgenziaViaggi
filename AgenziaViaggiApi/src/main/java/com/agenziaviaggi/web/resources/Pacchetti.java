@@ -67,4 +67,29 @@ public class Pacchetti {
                 .build();
         }
     }
+    
+    @PUT
+    public Response aggiornaPacchetto(Pacchetto p) {
+        try {
+            if (p.getId() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("ID mancante per l'aggiornamento")
+                    .build();
+            }
+            
+            pacchettoService.save(p);
+            return Response.ok(p).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT)
+                .entity("Errore durante l'aggiornamento: " + e.getMessage())
+                .build();
+        }
+    }
+    
+    @DELETE
+    @Path("/{id}")
+    public Response remove(@PathParam("id") Integer id) {
+        pacchettoService.delete(id);
+        return Response.noContent().build();
+    }
 }

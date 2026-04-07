@@ -7,6 +7,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -77,6 +78,24 @@ public class Clienti {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity("Errore durante la registrazione: " + e.getMessage())
+                .build();
+        }
+    }
+    
+    @PUT
+    public Response aggiornaCliente(Cliente c) {
+        try {
+            if (c.getId() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("ID mancante per l'aggiornamento")
+                    .build();
+            }
+            
+            clienteService.save(c);
+            return Response.ok(c).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT)
+                .entity("Errore durante l'aggiornamento: " + e.getMessage())
                 .build();
         }
     }

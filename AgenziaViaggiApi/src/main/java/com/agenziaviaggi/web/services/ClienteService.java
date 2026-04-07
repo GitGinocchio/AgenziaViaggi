@@ -4,6 +4,7 @@ import com.agenziaviaggi.web.entities.Cliente;
 import com.agenziaviaggi.web.entities.Prenotazione;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class ClienteService {
             return em.createQuery("SELECT c FROM Cliente c WHERE c.email = :e", Cliente.class)
                      .setParameter("e", email)
                      .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
         } catch (Exception ex) {
             return null;
         }
@@ -46,14 +49,15 @@ public class ClienteService {
     }
 
     public void save(Cliente c) throws Exception {
-        if (c.getId() == null) {
-            try {
+        try {
+            if (c.getId() == null) {
                 em.persist(c);
-            } catch (Exception e) {
-                throw new Exception("Email già presente");
+            } else {
+                em.merge(c);
             }
-        } else {
-            em.merge(c);
+            em.flush();
+        } catch (Exception e) {
+            throw new Exception("Errore nel salvataggio: l'email potrebbe essere già presente.");
         }
     }
     
