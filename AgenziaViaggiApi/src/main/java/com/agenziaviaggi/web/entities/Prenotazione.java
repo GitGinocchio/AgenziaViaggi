@@ -17,12 +17,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
 
 @Entity
 @Table(name = "PRENOTAZIONI", schema = "APP")
-public class Prenotazione {
+public class Prenotazione implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")

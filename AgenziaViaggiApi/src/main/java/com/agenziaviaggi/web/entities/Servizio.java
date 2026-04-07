@@ -4,6 +4,7 @@
  */
 package com.agenziaviaggi.web.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 
 /**
  *
@@ -20,7 +22,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "SERVIZI", schema = "APP")
-public class Servizio {
+public class Servizio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
@@ -40,6 +42,7 @@ public class Servizio {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PACCHETTO", nullable = false)
+    @JsonbTransient
     private Pacchetto pacchetto;
 
     public Servizio() {}

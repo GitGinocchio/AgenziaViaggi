@@ -7,6 +7,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -59,6 +60,25 @@ public class Servizi {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity("Errore nel salvataggio: " + e.getMessage())
+                .build();
+        }
+    }
+    
+    @PUT
+    public Response update(Servizio s) {
+        try {
+            if (s.getId() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("ID mancante per la modifica del servizio")
+                    .build();
+            }
+
+            servizioService.save(s);
+            return Response.ok(s).build();
+            
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("Errore durante la modifica: " + e.getMessage())
                 .build();
         }
     }
