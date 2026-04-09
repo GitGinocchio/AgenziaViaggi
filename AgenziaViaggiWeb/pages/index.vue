@@ -26,22 +26,22 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <UCard 
-          v-for="p in pacchettiEsempio" 
+          v-for="p in pacchettiRandom" 
           :key="p.id"
           class="group overflow-hidden transition-all hover:shadow-xl dark:hover:shadow-primary/10 border-none ring-1 ring-zinc-200 dark:ring-zinc-800"
         >
           <div class="aspect-video bg-zinc-100 dark:bg-zinc-800 relative overflow-hidden">
-            <img :src="p.image" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
-            <div v-if="p.is_offerta" class="absolute top-4 right-4">
+            <img :src="p.immagine" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+            <div v-if="p.isOfferta" class="absolute top-4 right-4">
               <UBadge color="warning" variant="solid" class="font-bold">OFFERTA</UBadge>
             </div>
           </div>
 
           <div class="p-6">
             <div class="flex justify-between items-start mb-2">
-              <h3 class="text-xl font-bold">{{ p.destinazione }}</h3>
+              <h3 class="text-xl font-bold">{{ p.titolo }}</h3>
               <div class="text-right">
-                <span class="block text-sm text-zinc-500 line-through" v-if="p.is_offerta">{{ p.prezzo + 200 }}€</span>
+                <span class="block text-sm text-zinc-500 line-through" v-if="p.isOfferta">{{ p.prezzo + 200 }}€</span>
                 <span class="text-xl font-black text-primary">{{ p.prezzo }}€</span>
               </div>
             </div>
@@ -49,13 +49,13 @@
               {{ p.descrizione }}
             </p>
             
-            <div class="flex gap-2 mb-6">
-              <UBadge v-for="extra in p.extras" :key="extra" variant="outline" color="neutral" size="sm">
-                {{ extra }}
+            <div v-if="p.tags" class="flex gap-2 mb-6">
+              <UBadge v-for="tag in p.tags.split(',')" :key="tag" variant="outline" color="neutral" size="sm">
+                {{ tag }}
               </UBadge>
             </div>
 
-            <UButton block color="primary" variant="solid">Dettagli Viaggio</UButton>
+            <UButton block color="primary" variant="solid" @click="router.push(`/pacchetti/${p.id}`)">Dettagli Viaggio</UButton>
           </div>
         </UCard>
       </div>
@@ -112,35 +112,28 @@
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const pacchettiEsempio = [
-  {
-    id: 1,
-    destinazione: 'Bali, Indonesia',
-    descrizione: 'Un paradiso tropicale tra templi millenari e spiagge bianche. Include volo e hotel 5 stelle.',
-    prezzo: 1250,
-    is_offerta: true,
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
-    extras: ['Volo A/R', 'Hotel', 'Tour Templi']
-  },
-  {
-    id: 2,
-    destinazione: 'Reykjavik, Islanda',
-    descrizione: 'Alla scoperta dell\'aurora boreale e dei ghiacciai. Un viaggio mozzafiato nella natura selvaggia.',
-    prezzo: 1890,
-    is_offerta: false,
-    image: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&w=800&q=80',
-    extras: ['Auto 4x4', 'Volo', 'Escursioni']
-  },
-  {
-    id: 3,
-    destinazione: 'Santorini, Grecia',
-    descrizione: 'Tramonti indimenticabili sulle cupole blu. Il pacchetto perfetto per una fuga romantica.',
-    prezzo: 950,
-    is_offerta: true,
-    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80',
-    extras: ['Volo', 'Colazione', 'Giro in Barca']
+const { data: pacchetti, pending } = await useFetch<Pacchetto[]>('http://localhost:8080/AgenziaViaggiApi/api/pacchetti');
+
+const pacchettiRandom = computed(() => {
+  if (!pacchetti.value || pacchetti.value.length === 0) return [];
+
+  const inOfferta = pacchetti.value.filter(p => p.isOfferta);
+  const normali = pacchetti.value.filter(p => !p.isOfferta);
+
+  const shuffle = (array: Pacchetto[]) => [...array].sort(() => Math.random() - 0.5);
+
+  const offerteShuffled = shuffle(inOfferta);
+  const normaliShuffled = shuffle(normali);
+
+  const risultato = offerteShuffled.slice(0, 3);
+
+  if (risultato.length < 3) {
+    const mancanti = 3 - risultato.length;
+    risultato.push(...normaliShuffled.slice(0, mancanti));
   }
-];
+
+  return risultato;
+});
 
 const categorie = [
   { name: 'Mare', icon: 'i-lucide-waves', url: "/pacchetti?q=Mare" },

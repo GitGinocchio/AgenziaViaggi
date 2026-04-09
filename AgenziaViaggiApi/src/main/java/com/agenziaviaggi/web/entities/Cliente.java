@@ -1,5 +1,7 @@
 package com.agenziaviaggi.web.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +31,8 @@ public class Cliente implements Serializable {
     @Column(name="PREFERENZE")
     private String preferenze;
     
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonbTransient
     private List<Prenotazione> prenotazioni = new ArrayList<>();
 
     public Cliente() {}

@@ -31,10 +31,6 @@
           
           <div class="flex items-center gap-6 text-zinc-300 font-medium">
             <div class="flex items-center gap-2">
-              <UIcon name="i-lucide-calendar" class="text-primary w-5 h-5" />
-              {{ formatDate(pacchetto.inizio) }}
-            </div>
-            <div class="flex items-center gap-2">
               <UIcon name="i-lucide-map-pin" class="text-primary w-5 h-5" />
               Pacchetto Verificato
             </div>
@@ -54,17 +50,54 @@
             </p>
           </section>
 
-          <section>
-            <h3 class="text-xl font-bold mb-6">Cosa è incluso</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div v-for="servizio in servizi" :key="servizio.label" class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                <UIcon :name="servizio.icon" class="text-primary w-6 h-6" />
-                <span class="text-sm font-bold">{{ servizio.label }}</span>
+          <section v-if="pacchetto.servizi && pacchetto.servizi.length > 0">
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <h3 class="text-2xl font-black uppercase tracking-tight">Servizi e Attività</h3>
+                <p class="text-zinc-500 text-sm">Personalizza il tuo viaggio con le nostre proposte</p>
+              </div>
+              <UBadge color="primary" variant="soft" size="lg" class="rounded-full">
+                {{ pacchetto.servizi.length }} Disponibili
+              </UBadge>
+            </div>
+
+            <div class="space-y-4">
+              <div 
+                v-for="servizio in pacchetto.servizi" 
+                :key="servizio.id" 
+                class="group flex flex-col md:flex-row gap-6 p-5 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-all hover:shadow-xl dark:hover:shadow-primary/5"
+              >
+                <div class="w-full md:w-48 h-48 md:h-auto relative shrink-0 overflow-hidden rounded-2xl">
+                  <img 
+                    :src="servizio.immagine || `https://source.unsplash.com/featured/?${servizio.nome},travel`" 
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div class="absolute top-3 left-3 opacity-75">
+                    <UBadge size="md" variant="solid" class="text-zinc-900 font-bold uppercase tracking-tighter">
+                      {{ servizio.tipo }}
+                    </UBadge>
+                  </div>
+                </div>
+
+                <div class="flex-1 flex flex-col justify-between py-1">
+                  <div>
+                    <div class="flex justify-between items-start mb-2">
+                      <h4 class="text-xl font-bold text-zinc-900 dark:text-white">{{ servizio.nome }}</h4>
+                      <div class="text-right">
+                        <p v-if="servizio.prezzo > 0" class="text-lg font-black text-primary">+{{ servizio.prezzo }}€</p>
+                        <p v-else class="text-xs font-black text-green-500 uppercase tracking-widest">Incluso</p>
+                      </div>
+                    </div>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed line-clamp-3 md:line-clamp-none">
+                      {{ servizio.descrizione }}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
-          <section class="p-8 bg-primary/5 rounded-3xl border border-primary/10">
+          <section v-if="pacchetto.isOfferta" class="p-8 bg-primary/5 rounded-3xl border border-primary/10">
             <div class="flex items-center gap-4 mb-4">
               <div class="p-3 bg-primary rounded-2xl text-white">
                 <UIcon name="i-lucide-info" class="w-6 h-6" />
@@ -100,14 +133,15 @@
                   </div>
                 </div>
 
-                <UButton 
+                <UButton
+                  :loading="isBooking"
                   block 
                   size="xl" 
                   color="primary" 
                   class="rounded-2xl font-black shadow-lg shadow-primary/30"
-                  @click="handleBooking"
+                  @click="isUserRegistered ? handleBooking() : handleLogin()"
                 >
-                  Prenota ora
+                  {{ isUserRegistered ? 'Prenota ora' : 'Accedi' }}
                 </UButton>
 
                 <p class="text-center text-[10px] text-zinc-400 uppercase tracking-tighter">
@@ -129,29 +163,83 @@
 
 <script setup lang="ts">
 const route = useRoute();
+const toast = useToast();
 
-const { data: pacchetto, pending } = await useFetch<Pacchetto>(`http://localhost:8080/AgenziaViaggiApi/api/pacchetti/${route.params.id}`);
+const userData = ref<Cliente | null>(null);
 
-const formatDate = (dateStr?: string) => {
-  if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('it-IT', { 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric' 
+onMounted(() => {
+  const storedUser = window.localStorage.getItem('user_account');
+  if (storedUser) {
+    try {
+      userData.value = JSON.parse(storedUser);
+    } catch (e) {
+      console.error("Errore nel parsing dell'utente", e);
+    }
+  }
+});
+
+const isUserRegistered = computed(() => !!userData.value);
+
+const { data: pacchetto, pending } = await useFetch<Pacchetto>(
+  `http://localhost:8080/AgenziaViaggiApi/api/pacchetti/${route.params.id}`
+);
+
+const isBooking = ref(false);
+
+async function handleBooking() {
+  if (!isUserRegistered.value) {
+    toast.add({
+      title: 'Accesso richiesto',
+      description: "Devi effettuare l'accesso per prenotare questo viaggio.",
+      color: 'warning'
+    });
+
+    return navigateTo({ 
+      path: '/onboarding', 
+      query: { redirect: route.fullPath } 
+    });
+  }
+
+  isBooking.value = true;
+
+  try {
+    const payload = {
+      idCliente: userData.value?.id,
+      idPacchetto: pacchetto.value?.id,
+      prezzoPagato: pacchetto.value?.prezzo, 
+      stato: "IN ATTESA",
+      dataPrenotazione: new Date().toISOString() 
+    };
+
+    const response = await $fetch<Prenotazione>('http://localhost:8080/AgenziaViaggiApi/api/prenotazioni', {
+      method: 'POST',
+      body: payload
+    });
+
+    toast.add({
+      title: 'Prenotazione Inviata!',
+      description: `La tua richiesta per ${pacchetto.value?.titolo} è stata registrata.`,
+      color: 'primary'
+    });
+
+    await navigateTo(`/prenotazioni/${response.id}`);
+
+  } catch (error) {
+    console.error("Errore durante la prenotazione:", error);
+    toast.add({
+      title: 'Errore',
+      description: 'Impossibile completare la prenotazione. Riprova più tardi.',
+      color: 'error'
+    });
+  } finally {
+    isBooking.value = false;
+  }
+}
+
+async function handleLogin() {
+  await navigateTo({
+    path: '/onboarding',
+    query: { redirect: route.fullPath }
   });
-};
-
-const servizi = [
-  { label: 'Volo A/R', icon: 'i-lucide-plane' },
-  { label: 'Hotel 4*', icon: 'i-lucide-hotel' },
-  { label: 'Assicurazione', icon: 'i-lucide-shield-check' },
-  { label: 'Guida Locale', icon: 'i-lucide-languages' },
-  { label: 'Transfer', icon: 'i-lucide-car' },
-  { label: 'Colazione', icon: 'i-lucide-coffee' },
-];
-
-const handleBooking = () => {
-  // Qui andrà la logica per aggiungere al carrello o andare alla pagina checkout
-  alert(`Inizializzazione prenotazione per: ${pacchetto.value?.titolo}`);
-};
+}
 </script>

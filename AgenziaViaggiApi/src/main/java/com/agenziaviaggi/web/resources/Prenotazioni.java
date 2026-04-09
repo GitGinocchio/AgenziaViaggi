@@ -6,12 +6,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
@@ -65,14 +64,22 @@ public class Prenotazioni {
         }
     }
 
-    @PATCH
-    @Path("/{id}/stato")
-    public Response changeStatus(@PathParam("id") Integer id, @QueryParam("nuovo") String nuovoStato) {
+    @PUT
+    public Response aggiornaPrenotazione(Prenotazione p) {
         try {
-            prenotazioneService.updateStato(id, nuovoStato);
-            return Response.ok("Stato aggiornato con successo").build();
+            if (p.getId() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("ID della prenotazione mancante")
+                    .build();
+            }
+
+            prenotazioneService.save(p);
+
+            return Response.ok(p).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("Errore durante l'aggiornamento della prenotazione: " + e.getMessage())
+                .build();
         }
     }
 

@@ -20,7 +20,8 @@
             class="w-full shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:shadow-primary/5 transition-all"
             input-class="text-xl border-none ring-1 ring-zinc-200 dark:ring-zinc-800 focus:ring-2 focus:ring-primary bg-white dark:bg-zinc-900"
             placeholder="Cerca per meta, attività o clima (es: mare, neve, Giappone...)"
-            @update:model-value="debounceSearch"
+            @input="debounceSearch" 
+            @keydown.enter="handleSearch"
           >
             <template #trailing>
               <UButton
@@ -41,7 +42,7 @@
             variant="ghost"
             color="neutral"
             class="shrink-0 flex flex-col items-center gap-1 hover:text-primary transition-colors"
-            @click="setQuickSearch(cat.value)"
+            @click="setQuickSearch(cat.value); debounceSearch()"
           >
             <UIcon :name="cat.icon" class="w-6 h-6" />
             <span class="text-xs font-medium">{{ cat.label }}</span>
@@ -98,12 +99,6 @@
             <div v-if="p.isOfferta" class="absolute top-4 left-4">
               <UBadge color="warning" variant="solid" class="font-black animate-pulse shadow-lg">PROMO</UBadge>
             </div>
-            
-            <div class="absolute bottom-4 left-4 text-white translate-y-4 group-hover:translate-y-0 transition-transform">
-              <p class="text-sm font-medium flex items-center gap-1">
-                <UIcon name="i-lucide-calendar" /> {{ formatDate(p.inizio) }}
-              </p>
-            </div>
           </div>
 
           <div class="p-6">
@@ -145,43 +140,90 @@
 
 <script setup lang="ts">
 const route = useRoute();
+const router = useRouter();
 const searchQuery = ref((route.query.q as string) || '');
 const sortBy = ref('Più recenti');
 
-const quickFilters = [
+const quickFilters = ref([
   { label: 'Mare', value: 'mare', icon: 'i-lucide-palmtree' },
   { label: 'Montagna', value: 'montagna', icon: 'i-lucide-mountain' },
   { label: 'Città', value: 'città', icon: 'i-lucide-landmark' },
   { label: 'Neve', value: 'neve', icon: 'i-lucide-snowflake' },
   { label: 'Relax', value: 'relax', icon: 'i-lucide-sparkles' },
-];
+]);
 
-const { data: pacchetti, pending, refresh } = await useFetch<Pacchetto[]>('http://localhost:8080/AgenziaViaggiApi/api/pacchetti', {
-  query: { q: searchQuery },
-  watch: [searchQuery]
+onMounted(() => {
+  const userData = localStorage.getItem('user_account');
+  if (userData) {
+    try {
+      const user = JSON.parse(userData);
+      if (user.preferenze) {
+        const prefsArray = user.preferenze.split(',').map((p: string) => p.trim());
+
+        prefsArray.forEach((pref: string) => {
+          const val = pref.toLowerCase();
+          
+          const exists = quickFilters.value.some(f => f.value === val);
+
+          if (!exists && pref !== "") {
+            quickFilters.value.push({
+              label: pref,
+              value: val,
+              icon: getIconByPref(pref)
+            });
+          }
+        });
+      }
+    } catch (e) {
+      console.error("Errore nel parsing delle preferenze", e);
+    }
+  }
 });
+
+const getIconByPref = (pref: string) => {
+  const p = pref.toLowerCase();
+  if (p.includes('mare')) return 'i-lucide-palmtree';
+  if (p.includes('montagna')) return 'i-lucide-mountain';
+  if (p.includes('città')) return 'i-lucide-landmark';
+  if (p.includes('neve')) return 'i-lucide-snowflake';
+  if (p.includes('avventura')) return 'i-lucide-compass';
+  if (p.includes('crocier')) return 'i-lucide-ship';
+  return 'i-lucide-map-pin'; 
+};
+
+const apiUrl = computed(() => {
+  const base = 'http://localhost:8080/AgenziaViaggiApi/api/pacchetti';
+  return searchQuery.value.trim() !== '' ? `${base}/search` : base;
+});
+
+const { data: pacchetti, pending, refresh } = await useFetch<Pacchetto[]>(apiUrl, {
+  query: computed(() => searchQuery.value ? { q: searchQuery.value } : {}),
+  watch: false,
+  key: 'pacchetti-list'
+});
+
+const handleSearch = () => {
+  router.push({ query: { q: searchQuery.value || undefined } });
+  refresh();
+};
+
+let timeout : number;
+const debounceSearch = () => {
+  clearTimeout(timeout);
+  timeout = setTimeout(() => {
+    handleSearch();
+  }, 300);
+};
 
 const setQuickSearch = (val: string) => {
   searchQuery.value = val;
+  handleSearch();
 };
 
 const formatDate = (dateStr?: string) => {
   if (!dateStr) return '';
   return new Date(dateStr).toLocaleDateString('it-IT', { month: 'short', year: 'numeric' });
 };
-
-let timeout: any;
-const debounceSearch = () => {
-  clearTimeout(timeout);
-  timeout = setTimeout(() => refresh(), 300);
-};
-
-watch(searchQuery, (newQuery) => {
-  navigateTo({
-    path: route.path,
-    query: { ...route.query, q: newQuery || undefined }
-  }, { replace: true });
-});
 </script>
 
 <style scoped>

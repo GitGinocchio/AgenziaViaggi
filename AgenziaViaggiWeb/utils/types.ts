@@ -2,12 +2,11 @@ export interface Pacchetto {
   id?: number;
   titolo: string;
   descrizione?: string;
-  inizio?: string;
-  fine?: string;
   tags?: string;
   prezzo: number;
   isOfferta: boolean;
   immagine?: string;
+  servizi?: Servizio[];
 }
 
 export interface Cliente {
@@ -24,8 +23,6 @@ export interface Servizio {
   nome: string;
   prezzo: number;
   descrizione?: string;
-  inizio?: string;
-  fine?: string;
   immagine?: string;
 }
 

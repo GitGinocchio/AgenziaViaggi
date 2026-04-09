@@ -20,17 +20,22 @@
           color="primary"
           icon="i-lucide-log-in"
           size="sm"
-          to="/onboarding"
+          :to="{ path: '/onboarding', query: { redirect: route.fullPath } }"
         />
         
-        <UButton
+        <UDropdownMenu
           v-else
-          label="Area utente"
-          icon="i-lucide-user"
-          size="sm"
-          class="hidden sm:flex"
-          to="/"
-        />
+          :items="userDropdownItems"
+          :popper="{ placement: 'bottom-end' }"
+        >
+          <UButton
+            color="neutral"
+            variant="ghost"
+            icon="i-lucide-user"
+            label="Area utente"
+            trailing-icon="i-lucide-chevron-down"
+          />
+        </UDropdownMenu>
       </template>
 
       <template #body>
@@ -60,13 +65,22 @@
 </template>
 
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
 
-const isUserRegistered = ref(false)
+const route = useRoute()
+const userAccount = ref<Cliente|null>(null)
 
-onMounted(() => {
-  isUserRegistered.value = !!localStorage.getItem('user_account')
-})
+const loadAccount = () => {
+  if (import.meta.client) {
+    const data = localStorage.getItem('user_account')
+    userAccount.value = data ? JSON.parse(data) : null
+  }
+}
+
+onMounted(loadAccount)
+
+const isUserRegistered = computed(() => !!userAccount.value)
+
 
 const headerItems = computed<NavigationMenuItem[]>(() => {
   const baseItems = [
@@ -74,7 +88,6 @@ const headerItems = computed<NavigationMenuItem[]>(() => {
     { label: 'Catalogo', to: '/pacchetti', icon: 'i-lucide-palmtree' }
   ]
 
-  // Aggiungiamo Prenotazioni solo se l'utente ha fatto l'onboarding
   if (isUserRegistered.value) {
     baseItems.push({
       label: 'Prenotazioni',
@@ -85,6 +98,45 @@ const headerItems = computed<NavigationMenuItem[]>(() => {
 
   return baseItems
 })
+
+const userDropdownItems = computed<DropdownMenuItem[][]>(() => [
+  [
+    {
+      label: userAccount.value?.nome || 'Utente',
+      slot: 'account',
+      disabled: true
+    },
+    {
+      label: userAccount.value?.email || 'Email',
+      slot: 'account',
+      disabled: true
+    }
+  ],
+  [
+    {
+      label: 'Elimina Account',
+      icon: 'i-lucide-trash-2',
+      onSelect: () => handleDeleteAccount()
+    }
+  ]
+])
+
+async function handleDeleteAccount() {
+  if (!userAccount.value?.id) return
+  
+  try {
+    await $fetch(`http://localhost:8080/AgenziaViaggiApi/api/clienti/${userAccount.value.id}`, {
+      method: 'DELETE'
+    });
+
+    localStorage.removeItem('user_account')
+    userAccount.value = null
+    
+    await navigateTo('/')
+  } catch (e) {
+    console.error(e)
+  }
+}
 
 const footerItems: NavigationMenuItem[] = [
   { label: 'Privacy Policy', to: '/privacy' },

@@ -33,24 +33,45 @@ public class ServizioService {
     }
 
     public void save(Servizio s) {
-        // Se il client ha inviato l'ID del pacchetto tramite setIdPacchetto
         if (s.getPacchetto() != null && s.getPacchetto().getId() != null) {
-            // Troviamo l'entità Pacchetto reale gestita dall'EntityManager
             Pacchetto p = em.find(Pacchetto.class, s.getPacchetto().getId());
-            s.setPacchetto(p);
+
+            if (p != null) {
+                s.setPacchetto(p);
+
+                if (s.getId() == null) {
+                    p.getServizi().add(s);
+                    em.persist(s);
+                } else {
+                    Servizio managedServizio = em.merge(s);
+
+                    p.getServizi().removeIf(existing -> existing.getId().equals(managedServizio.getId()));
+                    p.getServizi().add(managedServizio);
+                }
+            }
+        } else {
+            if (s.getId() == null) {
+                em.persist(s);
+            } else {
+                em.merge(s);
+            }
         }
 
-        if (s.getId() == null) {
-            em.persist(s);
-        } else {
-            em.merge(s);
-        }
+        em.flush();
     }
 
     public void delete(Integer id) {
         Servizio s = em.find(Servizio.class, id);
         if (s != null) {
+            Pacchetto p = s.getPacchetto();
+
+            if (p != null) {
+                p.getServizi().remove(s);
+            }
+
             em.remove(s);
+
+            em.flush();
         }
     }
 }

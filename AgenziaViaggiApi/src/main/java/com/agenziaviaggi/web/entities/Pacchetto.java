@@ -1,8 +1,10 @@
 package com.agenziaviaggi.web.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,21 +25,33 @@ public class Pacchetto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
     private Integer id;
+
     @Column(name="TITOLO")
     private String titolo;
+
     @Column(name="DESCRIZIONE")
     private String descrizione;
+
     @Column(name="TAGS")
     private String tags;
+
     @Column(name="PREZZO", nullable = false)
     private Double prezzo;
+
     @Column(name="IS_OFFERTA")
     private Boolean isOfferta = false;
+
     @Column(name="IMMAGINE")
     private String immagine;
     
-    @OneToMany(mappedBy = "pacchetto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pacchetto", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Servizio> servizi = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pacchetto")
+    @JsonbTransient 
+    private List<Prenotazione> prenotazioni = new ArrayList<>();
+
+    public Pacchetto() {}
 
     public Pacchetto(Integer id, String titolo, String descrizione, String tags, Double prezzo, String immagine) {
         this.id = id;
@@ -48,72 +62,37 @@ public class Pacchetto implements Serializable {
         this.immagine = immagine;
     }
 
-    public Pacchetto() {}
-
-    public List<Servizio> getServizi() {
-        return servizi;
+    public void addServizio(Servizio s) {
+        servizi.add(s);
+        s.setPacchetto(this);
     }
 
-    public void setServizi(List<Servizio> servizi) {
-        this.servizi = servizi;
+    public void removeServizio(Servizio s) {
+        servizi.remove(s);
+        s.setPacchetto(null);
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public String getTitolo() { return titolo; }
+    public void setTitolo(String titolo) { this.titolo = titolo; }
 
-    public String getTitolo() {
-        return titolo;
-    }
+    public String getDescrizione() { return descrizione; }
+    public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
 
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
-    }
+    public String getTags() { return tags; }
+    public void setTags(String tags) { this.tags = tags; }
 
-    public String getDescrizione() {
-        return descrizione;
-    }
+    public Double getPrezzo() { return prezzo; }
+    public void setPrezzo(Double prezzo) { this.prezzo = prezzo; }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
+    public Boolean getIsOfferta() { return isOfferta; }
+    public void setIsOfferta(Boolean isOfferta) { this.isOfferta = isOfferta; }
 
-    public String getTags() {
-        return tags;
-    }
+    public String getImmagine() { return immagine; }
+    public void setImmagine(String immagine) { this.immagine = immagine; }
 
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public Double getPrezzo() {
-        return prezzo;
-    }
-
-    public void setPrezzo(Double prezzo) {
-        this.prezzo = prezzo;
-    }
-
-    public Boolean getIsOfferta() {
-        return isOfferta;
-    }
-
-    public void setIsOfferta(Boolean isOfferta) {
-        this.isOfferta = isOfferta;
-    }
-
-    public String getImmagine() {
-        return immagine;
-    }
-
-    public void setImmagine(String immagine) {
-        this.immagine = immagine;
-    }
-    
-    
-    
+    public List<Servizio> getServizi() { return servizi; }
+    public void setServizi(List<Servizio> servizi) { this.servizi = servizi; }
 }

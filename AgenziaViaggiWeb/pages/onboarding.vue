@@ -23,7 +23,7 @@
 
             <div v-if="currentStep === 0" :key="0" class="w-full max-w-md space-y-8">
               <div class="space-y-3">
-                <h2 class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight uppercase">Il tuo Nome</h2>
+                <h2 class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight uppercase">Nominativo</h2>
                 <p class="text-zinc-500 text-lg">Iniziamo a personalizzare la tua esperienza.</p>
               </div>
               <UInput v-model="form.nome" placeholder="Nome e Cognome" size="xl" icon="i-lucide-user"
@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import type { StepperItem } from '@nuxt/ui'
 
-const router = useRouter();
+const route = useRoute();
 
 definePageMeta({ layout: false })
 
@@ -149,20 +149,26 @@ const handleNext = async () => {
         preferenze: form.preferenze.join(', ')
       }
 
-      await $fetch('http://127.0.0.1:8080/AgenziaViaggiApi/api/clienti', {
+      const response = await $fetch<Cliente>('http://127.0.0.1:8080/AgenziaViaggiApi/api/clienti', {
         method: 'POST',
         body: payload
       })
 
-      localStorage.setItem('user_account', JSON.stringify(payload))
+      localStorage.setItem('user_account', JSON.stringify(response))
 
       useToast().add({
-        title: 'Benvenuto!',
+        title: `Benvenuto ${form.nome}!`,
         description: 'Il tuo profilo è stato creato con successo.',
         color: 'primary'
       })
 
-      navigateTo('/')
+      const destination = route.query.redirect as string;
+
+      if (destination) {
+        await navigateTo(destination);
+      } else {
+        await navigateTo('/');
+      }
     } catch (error) {
       console.error('Errore durante il salvataggio:', error)
       
