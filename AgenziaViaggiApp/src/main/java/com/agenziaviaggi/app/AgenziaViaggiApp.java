@@ -1,5 +1,9 @@
 package com.agenziaviaggi.app;
 
+import com.agenziaviaggi.app.entities.Cliente;
+import com.agenziaviaggi.app.entities.Pacchetto;
+import com.agenziaviaggi.app.entities.Prenotazione;
+import com.agenziaviaggi.app.entities.Servizio;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.net.URI;

@@ -1,4 +1,4 @@
-package com.agenziaviaggi.app;
+package com.agenziaviaggi.app.entities;
 
 /**
  *
