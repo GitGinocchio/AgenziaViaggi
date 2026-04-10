@@ -1,1 +1,5 @@
+com\agenziaviaggi\app\Cliente.class
 com\agenziaviaggi\app\AgenziaViaggiApp.class
+com\agenziaviaggi\app\Prenotazione.class
+com\agenziaviaggi\app\Servizio.class
+com\agenziaviaggi\app\Pacchetto.class

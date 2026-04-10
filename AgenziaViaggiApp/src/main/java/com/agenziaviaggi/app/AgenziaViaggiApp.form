@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Container class="javax.swing.JMenuBar" name="jMenuBar1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="File"/>
+          </Properties>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit"/>
+          </Properties>
+        </Menu>
+      </SubComponents>
+    </Container>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -23,17 +43,20 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+          <Component id="tabs" alignment="1" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="1" max="32767" attributes="0"/>
+          <Component id="tabs" alignment="1" pref="432" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+    <Container class="javax.swing.JTabbedPane" name="tabs">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tabsStateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -50,50 +73,52 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="clearPacchetto" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="filler1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="1" attributes="0">
+                                                  <Component id="labelTagsPacchetto" alignment="0" min="-2" pref="279" max="-2" attributes="0"/>
+                                                  <Component id="labelDescrizionePacchetto" alignment="0" min="-2" pref="279" max="-2" attributes="0"/>
+                                                  <Component id="labelPrezzoPacchetto" alignment="0" min="-2" pref="279" max="-2" attributes="0"/>
+                                                  <Component id="labelTitoloPacchetto" alignment="0" min="-2" pref="279" max="-2" attributes="0"/>
+                                                  <Component id="labelURLImmaginePacchetto" alignment="0" min="-2" pref="277" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="isOffertaPacchetto" alignment="1" min="-2" pref="263" max="-2" attributes="0"/>
+                                                  <Component id="immaginePacchetto" alignment="0" min="-2" pref="263" max="-2" attributes="0"/>
+                                                  <Component id="prezzoPacchetto" alignment="0" min="-2" pref="263" max="-2" attributes="0"/>
+                                                  <Component id="tagsPacchetto" alignment="0" min="-2" pref="263" max="-2" attributes="0"/>
+                                                  <Component id="titoloPacchetto" alignment="0" min="-2" pref="263" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Component id="labelEditPacchetto" alignment="0" min="-2" pref="567" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jScrollPane3" alignment="0" min="-2" pref="585" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="clearPacchetto" min="-2" pref="103" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="removePacchetto" min="-2" max="-2" attributes="0"/>
+                              <Component id="removePacchetto" min="-2" pref="100" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="addPacchetto" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jScrollPane3" pref="513" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="filler1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="labelTagsPacchetto" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="labelDescrizionePacchetto" alignment="0" pref="80" max="32767" attributes="0"/>
-                                          <Component id="labelPrezzoPacchetto" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="labelTitoloPacchetto" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="labelURLImmaginePacchetto" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="titoloTextField" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="offertaCheckboxPacchetto" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="immagineTextField" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="prezzoSpinnerPacchetto" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="tagsTextField" alignment="1" max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="labelEditPacchetto" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="400" max="-2" attributes="0"/>
-                          <Component id="labelListaPacchetti" min="-2" pref="95" max="-2" attributes="0"/>
+                          <Component id="labelListaPacchetti" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -116,27 +141,27 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="labelTitoloPacchetto" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="titoloTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="titoloPacchetto" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="labelTagsPacchetto" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="tagsTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tagsPacchetto" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="labelPrezzoPacchetto" min="-2" pref="22" max="-2" attributes="0"/>
-                                  <Component id="prezzoSpinnerPacchetto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="prezzoPacchetto" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="labelURLImmaginePacchetto" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="immagineTextField" min="-2" max="-2" attributes="0"/>
+                                  <Component id="immaginePacchetto" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="labelDescrizionePacchetto" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="offertaCheckboxPacchetto" min="-2" max="-2" attributes="0"/>
+                                  <Component id="isOffertaPacchetto" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jScrollPane3" min="-2" pref="180" max="-2" attributes="0"/>
@@ -162,12 +187,15 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JList" name="jList1">
+                <Component class="javax.swing.JList" name="pacchettiEsistenti">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="0"/>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listaPacchettiModel" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="pacchettiEsistentiValueChanged"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
@@ -177,17 +205,24 @@
             <Component class="javax.swing.JLabel" name="labelListaPacchetti">
               <Properties>
                 <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="jList1"/>
+                  <ComponentRef name="pacchettiEsistenti"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pacchetti esistenti"/>
               </Properties>
             </Component>
-            <Component class="java.awt.Checkbox" name="offertaCheckboxPacchetto">
+            <Component class="java.awt.Checkbox" name="isOffertaPacchetto">
               <Properties>
                 <Property name="label" type="java.lang.String" value="Offerta"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JSpinner" name="prezzoSpinnerPacchetto">
+            <Component class="javax.swing.JSpinner" name="prezzoPacchetto">
+              <Properties>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Default Cursor"/>
+                </Property>
+                <Property name="doubleBuffered" type="boolean" value="true"/>
+                <Property name="name" type="java.lang.String" value="" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="labelTitoloPacchetto">
               <Properties>
@@ -234,17 +269,17 @@
                 <Property name="text" type="java.lang.String" value="textField4"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="tagsTextField">
+            <Component class="javax.swing.JTextField" name="tagsPacchetto">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci i tag del pacchetto separati da virgola"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="titoloTextField">
+            <Component class="javax.swing.JTextField" name="titoloPacchetto">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci il titolo del pacchetto qui"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="immagineTextField">
+            <Component class="javax.swing.JTextField" name="immaginePacchetto">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci l&apos;URL dell&apos;immagine del pacchetto qui"/>
               </Properties>
@@ -256,7 +291,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTextArea" name="descrizioneTextArea">
+                <Component class="javax.swing.JTextArea" name="descrizionePacchetto">
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
@@ -269,16 +304,26 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPacchettoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="removePacchetto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removePacchettoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="clearPacchetto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clear"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearPacchettoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -297,105 +342,100 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel26" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="clearServizio" min="-2" pref="105" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="removeServizio" min="-2" pref="101" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="addServizio" min="-2" pref="82" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="clearServizio" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="removeServizio" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="addServizio" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="jLabel31" alignment="1" max="32767" attributes="0"/>
-                                              <Component id="jLabel30" alignment="1" max="32767" attributes="0"/>
-                                              <Component id="jLabel29" alignment="1" max="32767" attributes="0"/>
-                                              <Component id="jLabel32" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jLabel28" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Component id="jLabel33" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel26" alignment="0" min="-2" pref="374" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="jLabel31" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                                          <Component id="jLabel32" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                                          <Component id="jLabel33" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                                          <Component id="jLabel30" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                                          <Component id="jLabel29" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                                          <Component id="jLabel28" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace type="unrelated" pref="18" max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="servizioImmagineTextField" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="tipoServizioTextField" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="servizioComboBox" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="nomeTextField" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="prezzoServizioSpinner" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jScrollPane7" alignment="0" pref="421" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="prezzoServizio" alignment="1" min="-2" pref="421" max="-2" attributes="0"/>
+                                          <Component id="immagineServizio" alignment="1" min="-2" pref="421" max="-2" attributes="0"/>
+                                          <Component id="jScrollPane7" alignment="1" min="-2" pref="421" max="-2" attributes="0"/>
+                                          <Component id="pacchettoServizio" min="-2" pref="421" max="-2" attributes="0"/>
+                                          <Component id="tipoServizio" alignment="1" min="-2" pref="421" max="-2" attributes="0"/>
+                                          <Component id="nomeServizio" alignment="1" min="-2" pref="421" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel27" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane8" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel27" alignment="3" max="32767" attributes="0"/>
+                          <Component id="jLabel27" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel26" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel28" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                                  <Component id="servizioComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel28" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="pacchettoServizio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel29" max="32767" attributes="0"/>
+                                  <Component id="tipoServizio" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel30" pref="26" max="32767" attributes="0"/>
+                                  <Component id="nomeServizio" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel29" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tipoServizioTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel31" min="-2" pref="22" max="-2" attributes="0"/>
+                                  <Component id="prezzoServizio" min="-2" pref="28" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="nomeTextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLabel30" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel32" max="32767" attributes="0"/>
+                                  <Component id="immagineServizio" pref="26" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="prezzoServizioSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel31" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jScrollPane7" min="-2" pref="148" max="-2" attributes="0"/>
+                                  <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel32" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="servizioImmagineTextField" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="addServizio" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="clearServizio" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jScrollPane7" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="addServizio" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="removeServizio" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="clearServizio" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="removeServizio" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="jScrollPane8" alignment="0" min="-2" pref="341" max="-2" attributes="0"/>
+                          <Component id="jScrollPane8" min="-2" pref="337" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -416,30 +456,27 @@
                 <Property name="text" type="java.lang.String" value="Pacchetto"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="servizioComboBox">
+            <Component class="javax.swing.JComboBox" name="pacchettoServizio">
               <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="comboPacchettiModel" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Seleziona il pacchetto a cui vuoi modificare i servizi"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="servizioComboBoxActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pacchettoServizioActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JTextField" name="tipoServizioTextField">
+            <Component class="javax.swing.JTextField" name="tipoServizio">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tipoServizioActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel29">
               <Properties>
@@ -451,9 +488,8 @@
                 <Property name="text" type="java.lang.String" value="Nome"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="nomeTextField">
+            <Component class="javax.swing.JTextField" name="nomeServizio">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci il nome del servizio"/>
               </Properties>
             </Component>
@@ -462,20 +498,16 @@
                 <Property name="text" type="java.lang.String" value="Prezzo"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JSpinner" name="prezzoServizioSpinner">
-              <Properties>
-                <Property name="enabled" type="boolean" value="false"/>
-              </Properties>
+            <Component class="javax.swing.JSpinner" name="prezzoServizio">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel32">
               <Properties>
                 <Property name="text" type="java.lang.String" value="URL Immagine"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="servizioImmagineTextField">
+            <Component class="javax.swing.JTextField" name="immagineServizio">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci l&apos;URL dell&apos;immagine del pacchetto qui"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel33">
@@ -490,11 +522,10 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTextArea" name="descrizioneServizioTextArea">
+                <Component class="javax.swing.JTextArea" name="descrizioneServizio">
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -503,16 +534,26 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clear"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearServizioActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="removeServizio">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeServizioActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="addServizio">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addServizioActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane8">
               <AuxValues>
@@ -521,12 +562,15 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JList" name="jList5">
+                <Component class="javax.swing.JList" name="serviziEsistenti">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="0"/>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listaServiziModel" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="serviziEsistentiValueChanged"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
@@ -550,36 +594,39 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel18" pref="374" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel18" min="-2" pref="446" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="149" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="clearPrenotazione" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="removePrenotazione" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="addPrenotazione" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="clearPrenotazione" min="-2" pref="110" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="removePrenotazione" min="-2" pref="103" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="addPrenotazione" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                           <Component id="jLabel24" alignment="1" max="32767" attributes="0"/>
                                           <Component id="jLabel23" alignment="1" pref="78" max="32767" attributes="0"/>
                                           <Component id="jLabel22" alignment="1" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace type="separate" max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="statoPrenotazione" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="prenotazioneCliente" pref="421" max="32767" attributes="0"/>
-                                          <Component id="prenotazionePacchetto" max="32767" attributes="0"/>
-                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="jLabel34" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="prezzoPagato" max="32767" attributes="0"/>
+                                  <Component id="prenotazioneCliente" pref="421" max="32767" attributes="0"/>
+                                  <Component id="prenotazionePacchetto" max="32767" attributes="0"/>
+                                  <Component id="statoPrenotazione" alignment="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel25" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane6" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
@@ -613,6 +660,11 @@
                                   <Component id="statoPrenotazione" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel24" alignment="0" min="-2" pref="22" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="prezzoPagato" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel34" min="-2" pref="22" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="addPrenotazione" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -622,7 +674,7 @@
                           </Group>
                           <Component id="jScrollPane6" alignment="0" min="-2" pref="341" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="19" max="32767" attributes="0"/>
+                      <EmptySpace pref="15" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -650,8 +702,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="statoPrenotazione">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="toolTipText" type="java.lang.String" value="Inserisci lo stato della prenotazione"/>
+                <Property name="toolTipText" type="java.lang.String" value="Inserisci lo stato della prenotazione (in attesa, confermata, annullata, ecc.)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="statoPrenotazioneActionPerformed"/>
@@ -671,10 +722,13 @@
               <SubComponents>
                 <Component class="javax.swing.JList" name="prenotazioniEsistenti">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="0"/>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listaPrenotazioniModel" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="prenotazioniEsistentiValueChanged"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
@@ -685,21 +739,31 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clear"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearPrenotazioneActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="removePrenotazione">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removePrenotazioneActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="addPrenotazione">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPrenotazioneActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="prenotazioneCliente">
               <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="0"/>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="comboClientiModel" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Scegli il cliente che vuole effetturare una prenotazione"/>
               </Properties>
@@ -709,14 +773,26 @@
             </Component>
             <Component class="javax.swing.JComboBox" name="prenotazionePacchetto">
               <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="0"/>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="comboPacchettiModel" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Scegli il pacchetto da prenotare"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JTextField" name="prezzoPagato">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="-"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel34">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Prezzo Pagato"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -733,47 +809,44 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel17" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="561" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel19" pref="78" max="32767" attributes="0"/>
-                                  <Component id="clearCliente" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel20" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLabel21" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel19" min="-2" pref="78" max="-2" attributes="0"/>
+                                  <Component id="jLabel20" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                                  <Component id="jLabel21" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                                  <Component id="clearCliente" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace pref="73" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="emailCliente" min="-2" pref="421" max="-2" attributes="0"/>
                                           <Component id="nomeCliente" min="-2" pref="421" max="-2" attributes="0"/>
                                           <Component id="preferenzeCliente" alignment="0" min="-2" pref="421" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="removeCliente" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                                      <Component id="removeCliente" min="-2" pref="100" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="addCliente" min="-2" max="-2" attributes="0"/>
+                                      <Component id="addCliente" min="-2" pref="72" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jScrollPane5" min="-2" pref="400" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel17" min="-2" pref="439" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                  </Group>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace pref="526" max="32767" attributes="0"/>
-                          <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="329" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane5" min="-2" pref="400" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -781,12 +854,15 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel17" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel17" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="jLabel16" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jScrollPane5" min="-2" pref="341" max="-2" attributes="0"/>
-                              <EmptySpace pref="12" max="32767" attributes="0"/>
+                              <EmptySpace pref="8" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -813,13 +889,6 @@
                           </Group>
                       </Group>
                   </Group>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                          <Component id="jLabel16" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="368" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -833,10 +902,13 @@
               <SubComponents>
                 <Component class="javax.swing.JList" name="clientiEsistenti">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="0"/>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listaClientiModel" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="clientiEsistentiValueChanged"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
@@ -860,13 +932,11 @@
             </Component>
             <Component class="javax.swing.JTextField" name="nomeCliente">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci il nome del cliente"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="emailCliente">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci l&apos;email del cliente"/>
               </Properties>
             </Component>
@@ -879,16 +949,26 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clear"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearClienteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="removeCliente">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeClienteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="addCliente">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addClienteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel21">
               <Properties>
@@ -897,7 +977,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="preferenzeCliente">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="toolTipText" type="java.lang.String" value="Inserisci le preferenze del cliente"/>
               </Properties>
             </Component>

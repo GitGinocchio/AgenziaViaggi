@@ -1,17 +1,53 @@
 package com.agenziaviaggi.app;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Giulio Tognetto
  */
 public class AgenziaViaggiApp extends javax.swing.JFrame {
-    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AgenziaViaggiApp.class.getName());
+    
+    private final HttpClient client = HttpClient.newBuilder()
+        .followRedirects(HttpClient.Redirect.NORMAL)
+        .build();
+    
+    private final Gson gson = new GsonBuilder()
+        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX") 
+        .create();
 
+    private final List<Pacchetto> listaPacchetti = new ArrayList<>();
+    private final DefaultListModel<String> listaPacchettiModel = new DefaultListModel<>();
+    private DefaultComboBoxModel<String> comboPacchettiModel = new DefaultComboBoxModel<>();
+   
+    private final List<Cliente> listaClienti = new ArrayList<>();
+    private final DefaultListModel<String> listaClientiModel = new DefaultListModel<>();
+    private DefaultComboBoxModel<String> comboClientiModel = new DefaultComboBoxModel<>();
+    
+    private final List<Prenotazione> listaPrenotazioni = new ArrayList<>();
+    private final DefaultListModel<String> listaPrenotazioniModel = new DefaultListModel<>();
+    
+    private final List<Servizio> listaServizi = new ArrayList<>();
+    private final DefaultListModel<String> listaServiziModel = new DefaultListModel<>();
+    
     /**
      * Creates new form MainFrame
      */
     public AgenziaViaggiApp() {
+        
         initComponents();
     }
 
@@ -24,13 +60,16 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        tabs = new javax.swing.JTabbedPane();
         pacchetti = new java.awt.Panel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        pacchettiEsistenti = new javax.swing.JList<>();
         labelListaPacchetti = new javax.swing.JLabel();
-        offertaCheckboxPacchetto = new java.awt.Checkbox();
-        prezzoSpinnerPacchetto = new javax.swing.JSpinner();
+        isOffertaPacchetto = new java.awt.Checkbox();
+        prezzoPacchetto = new javax.swing.JSpinner();
         labelTitoloPacchetto = new javax.swing.JLabel();
         labelEditPacchetto = new javax.swing.JLabel();
         labelTagsPacchetto = new javax.swing.JLabel();
@@ -39,11 +78,11 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
         labelURLImmaginePacchetto = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         textField4 = new java.awt.TextField();
-        tagsTextField = new javax.swing.JTextField();
-        titoloTextField = new javax.swing.JTextField();
-        immagineTextField = new javax.swing.JTextField();
+        tagsPacchetto = new javax.swing.JTextField();
+        titoloPacchetto = new javax.swing.JTextField();
+        immaginePacchetto = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        descrizioneTextArea = new javax.swing.JTextArea();
+        descrizionePacchetto = new javax.swing.JTextArea();
         addPacchetto = new javax.swing.JButton();
         removePacchetto = new javax.swing.JButton();
         clearPacchetto = new javax.swing.JButton();
@@ -51,23 +90,23 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        servizioComboBox = new javax.swing.JComboBox<>();
-        tipoServizioTextField = new javax.swing.JTextField();
+        pacchettoServizio = new javax.swing.JComboBox<>();
+        tipoServizio = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
-        nomeTextField = new javax.swing.JTextField();
+        nomeServizio = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
-        prezzoServizioSpinner = new javax.swing.JSpinner();
+        prezzoServizio = new javax.swing.JSpinner();
         jLabel32 = new javax.swing.JLabel();
-        servizioImmagineTextField = new javax.swing.JTextField();
+        immagineServizio = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        descrizioneServizioTextArea = new javax.swing.JTextArea();
+        descrizioneServizio = new javax.swing.JTextArea();
         clearServizio = new javax.swing.JButton();
         removeServizio = new javax.swing.JButton();
         addServizio = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jList5 = new javax.swing.JList<>();
+        serviziEsistenti = new javax.swing.JList<>();
         prenotazioni = new java.awt.Panel();
         jLabel18 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
@@ -82,6 +121,8 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
         addPrenotazione = new javax.swing.JButton();
         prenotazioneCliente = new javax.swing.JComboBox<>();
         prenotazionePacchetto = new javax.swing.JComboBox<>();
+        prezzoPagato = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
         clienti = new java.awt.Panel();
         jScrollPane5 = new javax.swing.JScrollPane();
         clientiEsistenti = new javax.swing.JList<>();
@@ -97,14 +138,28 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         preferenzeCliente = new javax.swing.JTextField();
 
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(jList1);
+        tabs.addChangeListener(this::tabsStateChanged);
 
-        labelListaPacchetti.setLabelFor(jList1);
+        pacchettiEsistenti.setModel(listaPacchettiModel);
+        pacchettiEsistenti.addListSelectionListener(this::pacchettiEsistentiValueChanged);
+        jScrollPane1.setViewportView(pacchettiEsistenti);
+
+        labelListaPacchetti.setLabelFor(pacchettiEsistenti);
         labelListaPacchetti.setText("Pacchetti esistenti");
 
-        offertaCheckboxPacchetto.setLabel("Offerta");
+        isOffertaPacchetto.setLabel("Offerta");
+
+        prezzoPacchetto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        prezzoPacchetto.setDoubleBuffered(true);
+        prezzoPacchetto.setName(""); // NOI18N
 
         labelTitoloPacchetto.setText("Titolo");
 
@@ -120,22 +175,26 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
 
         textField4.setText("textField4");
 
-        tagsTextField.setToolTipText("Inserisci i tag del pacchetto separati da virgola");
+        tagsPacchetto.setToolTipText("Inserisci i tag del pacchetto separati da virgola");
 
-        titoloTextField.setToolTipText("Inserisci il titolo del pacchetto qui");
+        titoloPacchetto.setToolTipText("Inserisci il titolo del pacchetto qui");
 
-        immagineTextField.setToolTipText("Inserisci l'URL dell'immagine del pacchetto qui");
+        immaginePacchetto.setToolTipText("Inserisci l'URL dell'immagine del pacchetto qui");
 
-        descrizioneTextArea.setColumns(20);
-        descrizioneTextArea.setRows(5);
-        descrizioneTextArea.setToolTipText("Inserisci la descrizione del pacchetto qui");
-        jScrollPane3.setViewportView(descrizioneTextArea);
+        descrizionePacchetto.setColumns(20);
+        descrizionePacchetto.setRows(5);
+        descrizionePacchetto.setToolTipText("Inserisci la descrizione del pacchetto qui");
+        jScrollPane3.setViewportView(descrizionePacchetto);
 
         addPacchetto.setText("Add");
+        addPacchetto.addActionListener(this::addPacchettoActionPerformed);
 
         removePacchetto.setText("Remove");
+        removePacchetto.setEnabled(false);
+        removePacchetto.addActionListener(this::removePacchettoActionPerformed);
 
         clearPacchetto.setText("Clear");
+        clearPacchetto.addActionListener(this::clearPacchettoActionPerformed);
 
         javax.swing.GroupLayout pacchettiLayout = new javax.swing.GroupLayout(pacchetti);
         pacchetti.setLayout(pacchettiLayout);
@@ -145,37 +204,38 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pacchettiLayout.createSequentialGroup()
-                        .addComponent(clearPacchetto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removePacchetto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addPacchetto))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
-                    .addGroup(pacchettiLayout.createSequentialGroup()
-                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pacchettiLayout.createSequentialGroup()
-                                .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(labelTagsPacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelDescrizionePacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                    .addComponent(labelPrezzoPacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelTitoloPacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelURLImmaginePacchetto, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(37, 37, 37)
+                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(titoloTextField)
-                                    .addComponent(offertaCheckboxPacchetto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(immagineTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(prezzoSpinnerPacchetto, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tagsTextField, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(pacchettiLayout.createSequentialGroup()
-                                .addComponent(labelEditPacchetto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(12, 12, 12)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(pacchettiLayout.createSequentialGroup()
+                                        .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(labelTagsPacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelDescrizionePacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelPrezzoPacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelTitoloPacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelURLImmaginePacchetto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(37, 37, 37)
+                                        .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(isOffertaPacchetto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(immaginePacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(prezzoPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(tagsPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(titoloPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(labelEditPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16))
+                    .addGroup(pacchettiLayout.createSequentialGroup()
+                        .addComponent(clearPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(removePacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addPacchetto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelListaPacchetti, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelListaPacchetti))
                 .addContainerGap())
         );
         pacchettiLayout.setVerticalGroup(
@@ -194,23 +254,23 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                     .addGroup(pacchettiLayout.createSequentialGroup()
                         .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelTitoloPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titoloTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(titoloPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelTagsPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tagsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tagsPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(labelPrezzoPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(prezzoSpinnerPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(prezzoPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelURLImmaginePacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(immagineTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(immaginePacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pacchettiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(labelDescrizionePacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(offertaCheckboxPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(isOffertaPacchetto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -222,7 +282,7 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Pacchetti", pacchetti);
+        tabs.addTab("Pacchetti", pacchetti);
 
         jLabel26.setText("Nuovo / Modifica servizio");
 
@@ -230,43 +290,44 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
 
         jLabel28.setText("Pacchetto");
 
-        servizioComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        servizioComboBox.setToolTipText("Seleziona il pacchetto a cui vuoi modificare i servizi");
-        servizioComboBox.addActionListener(this::servizioComboBoxActionPerformed);
+        pacchettoServizio.setModel(comboPacchettiModel);
+        pacchettoServizio.setToolTipText("Seleziona il pacchetto a cui vuoi modificare i servizi");
+        pacchettoServizio.addActionListener(this::pacchettoServizioActionPerformed);
 
-        tipoServizioTextField.setEditable(false);
-        tipoServizioTextField.setToolTipText("");
+        tipoServizio.setToolTipText("");
+        tipoServizio.addActionListener(this::tipoServizioActionPerformed);
 
         jLabel29.setText("Tipo");
 
         jLabel30.setText("Nome");
 
-        nomeTextField.setEditable(false);
-        nomeTextField.setToolTipText("Inserisci il nome del servizio");
+        nomeServizio.setToolTipText("Inserisci il nome del servizio");
 
         jLabel31.setText("Prezzo");
 
-        prezzoServizioSpinner.setEnabled(false);
-
         jLabel32.setText("URL Immagine");
 
-        servizioImmagineTextField.setToolTipText("Inserisci l'URL dell'immagine del pacchetto qui");
-        servizioImmagineTextField.setEnabled(false);
+        immagineServizio.setToolTipText("Inserisci l'URL dell'immagine del pacchetto qui");
 
         jLabel33.setText("Descrizione");
 
-        descrizioneServizioTextArea.setColumns(20);
-        descrizioneServizioTextArea.setRows(5);
-        descrizioneServizioTextArea.setEnabled(false);
-        jScrollPane7.setViewportView(descrizioneServizioTextArea);
+        descrizioneServizio.setColumns(20);
+        descrizioneServizio.setRows(5);
+        jScrollPane7.setViewportView(descrizioneServizio);
 
         clearServizio.setText("Clear");
+        clearServizio.addActionListener(this::clearServizioActionPerformed);
 
         removeServizio.setText("Remove");
+        removeServizio.setEnabled(false);
+        removeServizio.addActionListener(this::removeServizioActionPerformed);
 
         addServizio.setText("Add");
+        addServizio.addActionListener(this::addServizioActionPerformed);
 
-        jScrollPane8.setViewportView(jList5);
+        serviziEsistenti.setModel(listaServiziModel);
+        serviziEsistenti.addListSelectionListener(this::serviziEsistentiValueChanged);
+        jScrollPane8.setViewportView(serviziEsistenti);
 
         javax.swing.GroupLayout serviziLayout = new javax.swing.GroupLayout(servizi);
         servizi.setLayout(serviziLayout);
@@ -276,34 +337,32 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(serviziLayout.createSequentialGroup()
-                        .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(149, 149, 149))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, serviziLayout.createSequentialGroup()
-                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(clearServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(removeServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(serviziLayout.createSequentialGroup()
+                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(serviziLayout.createSequentialGroup()
-                                .addComponent(clearServizio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(removeServizio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(addServizio))
-                            .addGroup(serviziLayout.createSequentialGroup()
-                                .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jLabel33))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 18, Short.MAX_VALUE)
-                                .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(servizioImmagineTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tipoServizioTextField)
-                                    .addComponent(servizioComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(nomeTextField)
-                                    .addComponent(prezzoServizioSpinner)
-                                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(72, 72, 72)
+                                .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(prezzoServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(immagineServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pacchettoServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tipoServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nomeServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 12, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel27)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -314,46 +373,45 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
             .addGroup(serviziLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel27)
                     .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
-                .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(serviziLayout.createSequentialGroup()
                         .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(servizioComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel29)
-                            .addComponent(tipoServizioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel28)
+                            .addComponent(pacchettoServizio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tipoServizio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nomeTextField)
-                            .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(prezzoServizioSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                            .addComponent(nomeServizio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(servizioImmagineTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(serviziLayout.createSequentialGroup()
-                                .addComponent(jLabel33)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane7))
+                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(prezzoServizio, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(addServizio)
-                            .addComponent(removeServizio)
-                            .addComponent(clearServizio)))
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(immagineServizio, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel33))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(serviziLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(addServizio)
+                                .addComponent(clearServizio))
+                            .addComponent(removeServizio)))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16))
         );
 
-        jTabbedPane1.addTab("Servizi", servizi);
+        tabs.addTab("Servizi", servizi);
 
         jLabel18.setText("Nuova / Modifica prenotazione");
 
@@ -363,23 +421,36 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
 
         jLabel24.setText("Stato");
 
-        statoPrenotazione.setEditable(false);
-        statoPrenotazione.setToolTipText("Inserisci lo stato della prenotazione");
+        statoPrenotazione.setToolTipText("Inserisci lo stato della prenotazione (in attesa, confermata, annullata, ecc.)");
         statoPrenotazione.addActionListener(this::statoPrenotazioneActionPerformed);
 
         jLabel25.setText("Prenotazioni esistenti");
 
+        prenotazioniEsistenti.setModel(listaPrenotazioniModel);
+        prenotazioniEsistenti.addListSelectionListener(this::prenotazioniEsistentiValueChanged);
         jScrollPane6.setViewportView(prenotazioniEsistenti);
 
         clearPrenotazione.setText("Clear");
+        clearPrenotazione.addActionListener(this::clearPrenotazioneActionPerformed);
 
         removePrenotazione.setText("Remove");
+        removePrenotazione.setEnabled(false);
+        removePrenotazione.addActionListener(this::removePrenotazioneActionPerformed);
 
         addPrenotazione.setText("Add");
+        addPrenotazione.addActionListener(this::addPrenotazioneActionPerformed);
 
+        prenotazioneCliente.setModel(comboClientiModel);
         prenotazioneCliente.setToolTipText("Scegli il cliente che vuole effetturare una prenotazione");
 
+        prenotazionePacchetto.setModel(comboPacchettiModel);
         prenotazionePacchetto.setToolTipText("Scegli il pacchetto da prenotare");
+
+        prezzoPagato.setEditable(false);
+        prezzoPagato.setText("-");
+        prezzoPagato.setEnabled(false);
+
+        jLabel34.setText("Prezzo Pagato");
 
         javax.swing.GroupLayout prenotazioniLayout = new javax.swing.GroupLayout(prenotazioni);
         prenotazioni.setLayout(prenotazioniLayout);
@@ -389,27 +460,30 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(prenotazioniLayout.createSequentialGroup()
-                        .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                        .addGap(149, 149, 149))
-                    .addGroup(prenotazioniLayout.createSequentialGroup()
-                        .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 149, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, prenotazioniLayout.createSequentialGroup()
+                        .addComponent(clearPrenotazione, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(removePrenotazione, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addPrenotazione))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, prenotazioniLayout.createSequentialGroup()
+                        .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(prenotazioniLayout.createSequentialGroup()
-                                .addComponent(clearPrenotazione)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(removePrenotazione)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(addPrenotazione))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, prenotazioniLayout.createSequentialGroup()
                                 .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, Short.MAX_VALUE)
-                                .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(statoPrenotazione)
-                                    .addComponent(prenotazioneCliente, 0, 421, Short.MAX_VALUE)
-                                    .addComponent(prenotazionePacchetto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(prezzoPagato)
+                            .addComponent(prenotazioneCliente, 0, 421, Short.MAX_VALUE)
+                            .addComponent(prenotazionePacchetto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(statoPrenotazione))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -436,17 +510,23 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                         .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(statoPrenotazione)
                             .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(prezzoPagato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(prenotazioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(addPrenotazione)
                             .addComponent(removePrenotazione)
                             .addComponent(clearPrenotazione)))
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Prenotazioni", prenotazioni);
+        tabs.addTab("Prenotazioni", prenotazioni);
 
+        clientiEsistenti.setModel(listaClientiModel);
+        clientiEsistenti.addListSelectionListener(this::clientiEsistentiValueChanged);
         jScrollPane5.setViewportView(clientiEsistenti);
 
         jLabel16.setText("Clienti esistenti");
@@ -455,23 +535,24 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
 
         jLabel19.setText("Nome");
 
-        nomeCliente.setEditable(false);
         nomeCliente.setToolTipText("Inserisci il nome del cliente");
 
-        emailCliente.setEditable(false);
         emailCliente.setToolTipText("Inserisci l'email del cliente");
 
         jLabel20.setText("Email");
 
         clearCliente.setText("Clear");
+        clearCliente.addActionListener(this::clearClienteActionPerformed);
 
         removeCliente.setText("Remove");
+        removeCliente.setEnabled(false);
+        removeCliente.addActionListener(this::removeClienteActionPerformed);
 
         addCliente.setText("Add");
+        addCliente.addActionListener(this::addClienteActionPerformed);
 
         jLabel21.setText("Preferenze");
 
-        preferenzeCliente.setEditable(false);
         preferenzeCliente.setToolTipText("Inserisci le preferenze del cliente");
 
         javax.swing.GroupLayout clientiLayout = new javax.swing.GroupLayout(clienti);
@@ -482,45 +563,45 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clientiLayout.createSequentialGroup()
-                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(561, 561, 561))
-                    .addGroup(clientiLayout.createSequentialGroup()
-                        .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                            .addComponent(clearCliente)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(clearCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(clientiLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                                 .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(emailCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(nomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(preferenzeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(clientiLayout.createSequentialGroup()
-                                .addComponent(removeCliente)
+                                .addGap(13, 13, 13)
+                                .addComponent(removeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(addCliente)
-                                .addGap(9, 9, 9)))
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(clientiLayout.createSequentialGroup()
-                    .addContainerGap(526, Short.MAX_VALUE)
+                                .addComponent(addCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(9, 9, 9))))
+                    .addGroup(clientiLayout.createSequentialGroup()
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel16)
-                    .addGap(329, 329, 329)))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7))
         );
         clientiLayout.setVerticalGroup(
             clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clientiLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clientiLayout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(12, Short.MAX_VALUE))
+                        .addContainerGap(8, Short.MAX_VALUE))
                     .addGroup(clientiLayout.createSequentialGroup()
                         .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
@@ -539,24 +620,19 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
                             .addComponent(removeCliente)
                             .addComponent(clearCliente))
                         .addGap(9, 9, 9))))
-            .addGroup(clientiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(clientiLayout.createSequentialGroup()
-                    .addGap(13, 13, 13)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(368, 368, 368)))
         );
 
-        jTabbedPane1.addTab("Clienti", clienti);
+        tabs.addTab("Clienti", clienti);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
         );
 
         pack();
@@ -566,10 +642,832 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_statoPrenotazioneActionPerformed
 
-    private void servizioComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_servizioComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_servizioComboBoxActionPerformed
+    private void pacchettoServizioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pacchettoServizioActionPerformed
 
+    }//GEN-LAST:event_pacchettoServizioActionPerformed
+
+    private void tabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabsStateChanged
+        int selectedIndex = tabs.getSelectedIndex();
+        
+        switch (selectedIndex) {
+            case 0 ->
+                fetchPacchetti();
+
+            case 1 -> {
+                fetchPacchetti();
+                fetchServizi();
+            }
+
+            case 2 -> {
+                fetchClienti();
+                fetchPacchetti();
+                fetchPrenotazioni();
+            }
+
+            case 3 -> fetchClienti();
+
+            default -> {
+            }
+        }
+    }//GEN-LAST:event_tabsStateChanged
+
+    private void addClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClienteActionPerformed
+        String textNomeCliente = nomeCliente.getText().trim();
+        String textEmailCliente = emailCliente.getText().trim();
+        String textPreferenzeCliente = preferenzeCliente.getText().trim();
+
+        if (textNomeCliente.isEmpty() || textEmailCliente.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Errore: Nome ed Email sono obbligatori!", "Campi Mancanti", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int index = clientiEsistenti.getSelectedIndex();
+        boolean isEdit = (index != -1);
+
+        Cliente newCliente = new Cliente();
+        newCliente.setNome(textNomeCliente);
+        newCliente.setEmail(textEmailCliente);
+        newCliente.setPreferenze(textPreferenzeCliente);
+
+        String metodoHttp = "POST"; 
+        if (isEdit) {
+            Integer idEsistente = listaClienti.get(index).getId();
+            newCliente.setId(idEsistente);
+            metodoHttp = "PUT";
+        }
+
+        String json = gson.toJson(newCliente);
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/clienti"))
+            .header("Content-Type", "application/json")
+            .method(metodoHttp, HttpRequest.BodyPublishers.ofString(json))
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenAccept(response -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    switch (response.statusCode()) {
+                        case 201, 200 -> {
+                            JOptionPane.showMessageDialog(this, isEdit ? "Cliente modificato con successo!" : "Cliente creato con successo!");
+                            clientiEsistenti.clearSelection();
+                            clearCampiClienti();
+                            fetchClienti();
+                        }
+                        case 409, 400 -> JOptionPane.showMessageDialog(this, "Errore: Email già esistente o dati non validi!", "Errore Server", JOptionPane.ERROR_MESSAGE);
+                        default -> JOptionPane.showMessageDialog(this, "Errore imprevisto dal server: " + response.statusCode());
+                    }
+                });
+                System.err.println(response.body());
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore di connessione: " + ex.getMessage());
+                });
+                return null;
+            });
+    }//GEN-LAST:event_addClienteActionPerformed
+
+    private void clientiEsistentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientiEsistentiValueChanged
+        if (evt.getValueIsAdjusting()) {
+            return;
+        }
+        
+        int index = clientiEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            Cliente selezionato = listaClienti.get(index);
+            
+            nomeCliente.setText(selezionato.getNome());
+            emailCliente.setText(selezionato.getEmail());
+            preferenzeCliente.setText(selezionato.getPreferenze());
+            
+            removeCliente.setEnabled(true);
+            clearCliente.setText("Deselect");
+            addCliente.setText("Edit");
+        } else {
+            clearCampiClienti();
+            clearCliente.setText("Clear");
+            removeCliente.setEnabled(false);
+            addCliente.setText("Add");
+        }  
+    }//GEN-LAST:event_clientiEsistentiValueChanged
+
+    private void clearClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearClienteActionPerformed
+        int index = clientiEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            clientiEsistenti.clearSelection();
+            clearCliente.setText("Clear");
+            removeCliente.setEnabled(false);
+            addCliente.setText("Add");
+            return;
+        }
+        
+        clearCampiClienti();
+    }//GEN-LAST:event_clearClienteActionPerformed
+
+    private void removeClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeClienteActionPerformed
+        int index = clientiEsistenti.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona un cliente da rimuovere.");
+            return;
+        }
+
+        Cliente daRimuovere = listaClienti.get(index);
+        int scelta = JOptionPane.showConfirmDialog(this, 
+                "Sei sicuro di voler eliminare " + daRimuovere.getNome() + "?", 
+                "Conferma Eliminazione", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (scelta == JOptionPane.YES_OPTION) {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/clienti/" + daRimuovere.getId()))
+                .DELETE()
+                .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenAccept(response -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        if (response.statusCode() == 204 || response.statusCode() == 200) {
+                            JOptionPane.showMessageDialog(this, "Cliente rimosso.");
+                            clientiEsistenti.clearSelection();
+                            clearCampiClienti();
+                            fetchClienti(); 
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Errore: Impossibile eliminare (forse ha prenotazioni attive?)");
+                        }
+                    });
+                });
+        }
+    }//GEN-LAST:event_removeClienteActionPerformed
+
+    private void addPacchettoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPacchettoActionPerformed
+        String textTitoloPacchetto = titoloPacchetto.getText().trim();
+        String textDescrizionePacchetto = descrizionePacchetto.getText().trim();
+        String textImmaginePacchetto = immaginePacchetto.getText().trim();
+        String textTagsPacchetto = tagsPacchetto.getText().trim();
+        Double doublePrezzoPacchetto = ((Number) prezzoPacchetto.getValue()).doubleValue();
+        boolean booleanIsOffertaPacchetto = isOffertaPacchetto.getState();
+        
+        if (textTitoloPacchetto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Errore: Titolo obbligatorio!", "Campi Mancanti", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        Pacchetto newPacchetto = new Pacchetto();
+        newPacchetto.setTitolo(textTitoloPacchetto);
+        newPacchetto.setDescrizione(textDescrizionePacchetto);
+        newPacchetto.setImmagine(textImmaginePacchetto);
+        newPacchetto.setTags(textTagsPacchetto);
+        newPacchetto.setPrezzo(doublePrezzoPacchetto);
+        newPacchetto.setIsOfferta(booleanIsOffertaPacchetto);
+        
+        int index = pacchettiEsistenti.getSelectedIndex();
+        boolean isEdit = (index != -1);
+        
+        String metodoHttp = "POST"; 
+        if (isEdit) {
+            Integer idEsistente = listaPacchetti.get(index).getId();
+            newPacchetto.setId(idEsistente);
+            metodoHttp = "PUT";
+        }
+
+        String json = gson.toJson(newPacchetto);
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/pacchetti"))
+            .header("Content-Type", "application/json")
+            .method(metodoHttp, HttpRequest.BodyPublishers.ofString(json))
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenAccept(response -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    switch (response.statusCode()) {
+                        case 201, 200 -> {
+                            JOptionPane.showMessageDialog(this, isEdit ? "Pacchetto modificato con successo!" : "Pacchetto creato con successo!");
+                            pacchettiEsistenti.clearSelection();
+                            clearCampiPacchetti();
+                            fetchPacchetti();
+                        }
+                        case 409, 400 -> JOptionPane.showMessageDialog(this, "Errore: Titolo gia esistente o dati non validi!", "Errore Server", JOptionPane.ERROR_MESSAGE);
+                        default -> JOptionPane.showMessageDialog(this, "Errore imprevisto dal server: " + response.statusCode());
+                    }
+                });
+                System.err.println(response.body());
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore di connessione: " + ex.getMessage());
+                });
+                return null;
+            });
+    }//GEN-LAST:event_addPacchettoActionPerformed
+
+    private void clearPacchettoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearPacchettoActionPerformed
+        int index = pacchettiEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            pacchettiEsistenti.clearSelection();
+            clearPacchetto.setText("Clear");
+            removePacchetto.setEnabled(false);
+            addPacchetto.setText("Add");
+            return;
+        }
+        
+        clearCampiPacchetti();
+    }//GEN-LAST:event_clearPacchettoActionPerformed
+
+    private void pacchettiEsistentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_pacchettiEsistentiValueChanged
+        if (evt.getValueIsAdjusting()) {
+            return;
+        }
+        
+        int index = pacchettiEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            Pacchetto selezionato = listaPacchetti.get(index);
+            
+            titoloPacchetto.setText(selezionato.getTitolo());
+            descrizionePacchetto.setText(selezionato.getDescrizione());
+            immaginePacchetto.setText(selezionato.getImmagine());
+            tagsPacchetto.setText(selezionato.getTags());
+            prezzoPacchetto.setValue(selezionato.getPrezzo());
+            isOffertaPacchetto.setState(selezionato.getIsOfferta());
+            
+            removePacchetto.setEnabled(true);
+            clearPacchetto.setText("Deselect");
+            addPacchetto.setText("Edit");
+        } else {
+            clearCampiPacchetti();
+            clearPacchetto.setText("Clear");
+            removePacchetto.setEnabled(false);
+            addPacchetto.setText("Add");
+        }
+    }//GEN-LAST:event_pacchettiEsistentiValueChanged
+
+    private void removePacchettoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePacchettoActionPerformed
+        int index = pacchettiEsistenti.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona un pacchetto da rimuovere.");
+            return;
+        }
+
+        Pacchetto daRimuovere = listaPacchetti.get(index);
+        int scelta = JOptionPane.showConfirmDialog(this, 
+                "Sei sicuro di voler eliminare " + daRimuovere.getTitolo() + "?", 
+                "Conferma Eliminazione", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (scelta == JOptionPane.YES_OPTION) {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/pacchetti/" + daRimuovere.getId()))
+                .DELETE()
+                .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenAccept(response -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        if (response.statusCode() == 204 || response.statusCode() == 200) {
+                            JOptionPane.showMessageDialog(this, "Pacchetto rimosso.");
+                            pacchettiEsistenti.clearSelection();
+                            clearCampiPacchetti();
+                            fetchPacchetti(); 
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Errore: Impossibile eliminare il pacchetto");
+                        }
+                    });
+                });
+        }
+    }//GEN-LAST:event_removePacchettoActionPerformed
+
+    private void addServizioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addServizioActionPerformed
+        int selectedPacchetto = pacchettoServizio.getSelectedIndex();
+        String textTipoServizio = tipoServizio.getText().trim();
+        String textNomeServizio = nomeServizio.getText().trim();
+        String textImmagineServizio = immagineServizio.getText().trim();
+        String textDescrizioneServizio = descrizioneServizio.getText().trim();
+        Double doublePrezzoServizio = ((Number) prezzoServizio.getValue()).doubleValue();
+        
+        if (textNomeServizio.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Errore: Nome obbligatorio!", "Campi Mancanti", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (selectedPacchetto == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona un pacchetto per questo servizio!");
+            return;
+        }
+        
+        int idRealePacchetto = listaPacchetti.get(selectedPacchetto).getId();
+        
+        Servizio newServizio = new Servizio();
+        newServizio.setIdPacchetto(idRealePacchetto);
+        newServizio.setTipo(textTipoServizio);
+        newServizio.setNome(textNomeServizio);
+        newServizio.setImmagine(textImmagineServizio);
+        newServizio.setDescrizione(textDescrizioneServizio);
+        newServizio.setPrezzo(doublePrezzoServizio);
+        
+        int index = serviziEsistenti.getSelectedIndex();
+        boolean isEdit = (index != -1);
+        
+        String metodoHttp = "POST"; 
+        if (isEdit) {
+            Integer idEsistente = listaServizi.get(index).getId();
+            newServizio.setId(idEsistente);
+            metodoHttp = "PUT";
+        }
+        
+        String json = gson.toJson(newServizio);
+        
+        System.out.printf("%s\n", json);
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/servizi"))
+            .header("Content-Type", "application/json")
+            .method(metodoHttp, HttpRequest.BodyPublishers.ofString(json))
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenAccept(response -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    switch (response.statusCode()) {
+                        case 201, 200 -> {
+                            JOptionPane.showMessageDialog(this, isEdit ? "Servizio modificato con successo!" : "Servizio creato con successo!");
+                            serviziEsistenti.clearSelection();
+                            clearCampiServizi();
+                            fetchServizi();
+                        }
+                        case 409, 400 -> JOptionPane.showMessageDialog(this, "Errore: Nome gia esistente o dati non validi!", "Errore Server", JOptionPane.ERROR_MESSAGE);
+                        default -> JOptionPane.showMessageDialog(this, "Errore imprevisto dal server: " + response.statusCode());
+                    }
+                });
+                System.err.println(response.body());
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore di connessione: " + ex.getMessage());
+                });
+                return null;
+            });
+    }//GEN-LAST:event_addServizioActionPerformed
+
+    private void removeServizioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeServizioActionPerformed
+        int index = serviziEsistenti.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona un servizio da rimuovere.");
+            return;
+        }
+
+        Servizio daRimuovere = listaServizi.get(index);
+        int scelta = JOptionPane.showConfirmDialog(this, 
+                "Sei sicuro di voler eliminare " + daRimuovere.getNome() + "?", 
+                "Conferma Eliminazione", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (scelta == JOptionPane.YES_OPTION) {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/servizi/" + daRimuovere.getId()))
+                .DELETE()
+                .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenAccept(response -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        if (response.statusCode() == 204 || response.statusCode() == 200) {
+                            JOptionPane.showMessageDialog(this, "Servizio rimosso.");
+                            serviziEsistenti.clearSelection();
+                            clearCampiServizi();
+                            fetchServizi(); 
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Errore: Impossibile eliminare il servizio");
+                        }
+                    });
+                });
+        }
+    }//GEN-LAST:event_removeServizioActionPerformed
+
+    private void clearServizioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearServizioActionPerformed
+        int index = serviziEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            serviziEsistenti.clearSelection();
+            clearServizio.setText("Clear");
+            removeServizio.setEnabled(false);
+            addServizio.setText("Add");
+            return;
+        }
+        
+        clearCampiServizi();
+    }//GEN-LAST:event_clearServizioActionPerformed
+
+    private void serviziEsistentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_serviziEsistentiValueChanged
+        if (evt.getValueIsAdjusting()) {
+            return;
+        }
+        
+        int index = serviziEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            Servizio selezionato = listaServizi.get(index);
+            
+            Integer idPacchettoDelServizio = selezionato.getIdPacchetto();
+
+            int indexPacchetto = -1;
+            for (int i = 0; i < listaPacchetti.size(); i++) {
+                if (listaPacchetti.get(i).getId().equals(idPacchettoDelServizio)) {
+                    indexPacchetto = i;
+                    break;
+                }
+            }
+
+            if (indexPacchetto != -1) {
+                pacchettoServizio.setSelectedIndex(indexPacchetto);
+            }
+            
+            nomeServizio.setText(selezionato.getNome());
+            descrizioneServizio.setText(selezionato.getDescrizione());
+            immagineServizio.setText(selezionato.getImmagine());
+            tipoServizio.setText(selezionato.getTipo());
+            prezzoServizio.setValue(selezionato.getPrezzo());
+            
+            removeServizio.setEnabled(true);
+            clearServizio.setText("Deselect");
+            addServizio.setText("Edit");
+        } else {
+            clearCampiServizi();
+            clearServizio.setText("Clear");
+            removeServizio.setEnabled(false);
+            addServizio.setText("Add");
+        }
+    }//GEN-LAST:event_serviziEsistentiValueChanged
+
+    private void addPrenotazioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPrenotazioneActionPerformed
+        int selectedCliente = prenotazioneCliente.getSelectedIndex();
+        int selectedPacchetto = prenotazionePacchetto.getSelectedIndex();
+        int selectedPrenotazione = prenotazioniEsistenti.getSelectedIndex();
+
+        String textStatoPrenotazione = statoPrenotazione.getText().trim();
+        boolean isEdit = (selectedPrenotazione != -1);
+
+        if (selectedCliente == -1 || selectedPacchetto == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona un cliente e un pacchetto!", "Dati mancanti", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int idRealeCliente = listaClienti.get(selectedCliente).getId();
+        int idRealePacchetto = listaPacchetti.get(selectedPacchetto).getId();
+
+        double prezzoFinale;
+        if (isEdit) {
+            prezzoFinale = listaPrenotazioni.get(selectedPrenotazione).getPrezzoPagato();
+        } else {
+            Pacchetto pSelezionato = listaPacchetti.get(selectedPacchetto);
+            prezzoFinale = pSelezionato.getPrezzo();
+        }
+
+        Prenotazione newPrenotazione = new Prenotazione();
+        newPrenotazione.setDataPrenotazione(new java.util.Date());
+        newPrenotazione.setIdCliente(idRealeCliente);
+        newPrenotazione.setIdPacchetto(idRealePacchetto);
+        newPrenotazione.setPrezzoPagato(prezzoFinale);
+        newPrenotazione.setStato(textStatoPrenotazione);
+
+        String metodoHttp = "POST";
+        if (isEdit) {
+            Integer idEsistente = listaPrenotazioni.get(selectedPrenotazione).getId();
+            newPrenotazione.setId(idEsistente);
+            metodoHttp = "PUT";
+        }
+
+        try {
+            String json = gson.toJson(newPrenotazione);
+            System.out.println("Invio JSON (" + metodoHttp + "): " + json);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/prenotazioni"))
+                .header("Content-Type", "application/json")
+                .method(metodoHttp, HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenAccept(response -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        if (response.statusCode() == 200 || response.statusCode() == 201) {
+                            String msg = isEdit ? "Prenotazione aggiornata!" : "Prenotazione creata!";
+                            JOptionPane.showMessageDialog(this, msg);
+
+                            prenotazioniEsistenti.clearSelection();
+                            clearCampiPrenotazioni();
+                            fetchPrenotazioni();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Errore dal server (" + response.statusCode() + "): " + response.body(), "Errore", JOptionPane.ERROR_MESSAGE);
+                        }
+                    });
+                })
+                .exceptionally(ex -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(this, "Errore di connessione: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    });
+                    return null;
+                });
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Errore durante la preparazione della richiesta: " + e.getMessage());
+        }
+    }//GEN-LAST:event_addPrenotazioneActionPerformed
+
+    private void prenotazioniEsistentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_prenotazioniEsistentiValueChanged
+        if (evt.getValueIsAdjusting()) {
+            return;
+        }
+
+        int index = prenotazioniEsistenti.getSelectedIndex();
+
+        if (index != -1) {
+            Prenotazione selezionata = listaPrenotazioni.get(index);
+
+            int indexPacchetto = -1;
+            for (int i = 0; i < listaPacchetti.size(); i++) {
+                if (listaPacchetti.get(i).getId().equals(selezionata.getIdPacchetto())) {
+                    indexPacchetto = i;
+                    break;
+                }
+            }
+            prenotazionePacchetto.setSelectedIndex(indexPacchetto);
+
+            int indexCliente = -1;
+            for (int i = 0; i < listaClienti.size(); i++) {
+                if (listaClienti.get(i).getId().equals(selezionata.getIdCliente())) {
+                    indexCliente = i;
+                    break;
+                }
+            }
+            prenotazioneCliente.setSelectedIndex(indexCliente);
+            statoPrenotazione.setText(selezionata.getStato());
+            removePrenotazione.setEnabled(true);
+            clearPrenotazione.setText("Deselect");
+            addPrenotazione.setText("Edit");
+            prezzoPagato.setText(selezionata.getPrezzoPagato().toString());
+
+        } else {
+            clearCampiPrenotazioni();
+            prenotazioneCliente.setSelectedIndex(-1);
+            prenotazionePacchetto.setSelectedIndex(-1);
+            clearPrenotazione.setText("Clear");
+            removePrenotazione.setEnabled(false);
+            addPrenotazione.setText("Add");
+        }
+    }//GEN-LAST:event_prenotazioniEsistentiValueChanged
+
+    private void removePrenotazioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePrenotazioneActionPerformed
+        int index = prenotazioniEsistenti.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona una prenotazione da rimuovere.");
+            return;
+        }
+
+        Prenotazione daRimuovere = listaPrenotazioni.get(index);
+
+        int scelta = JOptionPane.showConfirmDialog(this, 
+                "Sei sicuro di voler eliminare la prenotazione ID: " + daRimuovere.getId() + "?", 
+                "Conferma Eliminazione", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (scelta == JOptionPane.YES_OPTION) {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/prenotazioni/" + daRimuovere.getId()))
+                .DELETE()
+                .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenAccept(response -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        if (response.statusCode() == 204 || response.statusCode() == 200) {
+                            JOptionPane.showMessageDialog(this, "Prenotazione rimossa con successo.");
+                            prenotazioniEsistenti.clearSelection();
+                            clearCampiPrenotazioni();
+                            fetchPrenotazioni(); 
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Errore dal server: Impossibile eliminare la prenotazione.");
+                        }
+                    });
+                })
+                .exceptionally(ex -> {
+                    java.awt.EventQueue.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(this, "Errore di connessione: " + ex.getMessage());
+                    });
+                    return null;
+                });
+        }
+    }//GEN-LAST:event_removePrenotazioneActionPerformed
+
+    private void clearPrenotazioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearPrenotazioneActionPerformed
+        int index = prenotazioniEsistenti.getSelectedIndex();
+        
+        if (index != -1) {
+            prenotazioniEsistenti.clearSelection();
+            clearPrenotazione.setText("Clear");
+            removePrenotazione.setEnabled(false);
+            addPrenotazione.setText("Add");
+            return;
+        }
+        
+        clearCampiPrenotazioni();
+    }//GEN-LAST:event_clearPrenotazioneActionPerformed
+
+    private void tipoServizioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoServizioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tipoServizioActionPerformed
+
+    private void clearCampiClienti() {
+        nomeCliente.setText("");
+        emailCliente.setText("");
+        preferenzeCliente.setText("");
+    }
+    
+    private void clearCampiPacchetti() {
+        titoloPacchetto.setText("");
+        descrizionePacchetto.setText("");
+        immaginePacchetto.setText("");
+        tagsPacchetto.setText("");
+        prezzoPacchetto.setValue(0);
+        isOffertaPacchetto.setState(false);
+    }
+    
+    private void clearCampiServizi() {
+        pacchettoServizio.setSelectedIndex(0);
+        tipoServizio.setText("");
+        nomeServizio.setText("");
+        immagineServizio.setText("");
+        descrizioneServizio.setText("");
+        prezzoServizio.setValue(0);
+    }
+    
+    private void clearCampiPrenotazioni() {
+        prenotazioneCliente.setSelectedIndex(0);
+        prenotazionePacchetto.setSelectedIndex(0);
+        statoPrenotazione.setText("");
+        prezzoPagato.setText("-");
+    }
+    
+    private void fetchPacchetti() {
+        System.out.println("Fetch pacchetti!");
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/pacchetti"))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .thenAccept(json -> {
+                System.out.printf("%s\n", json);
+                Pacchetto[] array = gson.fromJson(json, Pacchetto[].class);
+
+                java.awt.EventQueue.invokeLater(() -> {
+                    listaPacchetti.clear();
+                    listaPacchettiModel.clear();
+                    comboPacchettiModel.removeAllElements();
+                    for (Pacchetto p : array) {
+                        listaPacchetti.add(p);
+                        listaPacchettiModel.addElement(p.getTitolo());
+                        comboPacchettiModel.addElement(p.getTitolo());
+                    }
+                });
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore fetch: " + ex.getMessage());
+                });
+                return null;
+            });
+    }
+    
+    private void fetchClienti() {
+        System.out.println("Fetch clienti!");
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/clienti"))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .thenAccept(json -> {
+                System.out.printf("%s\n", json);
+                Cliente[] array = gson.fromJson(json, Cliente[].class);
+
+                java.awt.EventQueue.invokeLater(() -> {
+                    listaClienti.clear();
+                    listaClientiModel.clear();
+                    comboClientiModel.removeAllElements();
+                    for (Cliente c : array) {
+                        listaClienti.add(c);
+                        listaClientiModel.addElement(c.getNome() + " (" + c.getEmail() + ")");
+                        comboClientiModel.addElement(c.getNome() + " (" + c.getEmail() + ")");
+                    }
+                });
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore fetch: " + ex.getMessage());
+                });
+                return null;
+            });  
+    }
+    
+    private void fetchPrenotazioni() {
+        System.out.println("Fetch prenotazioni!");
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/prenotazioni"))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .thenAccept(json -> {
+                System.out.printf("%s\n", json);
+                Prenotazione[] array = gson.fromJson(json, Prenotazione[].class);
+
+                java.awt.EventQueue.invokeLater(() -> {
+                    listaPrenotazioni.clear();
+                    listaPrenotazioniModel.clear();
+
+                    for (Prenotazione p : array) {
+                        listaPrenotazioni.add(p);
+
+                        Cliente c = findClientePerId(p.getIdCliente());
+                        Pacchetto pac = findPacchettoPerId(p.getIdPacchetto());
+
+                        String nomeCli = (c != null) ? c.getNome() : "Cliente sconosciuto";
+                        String emailCli = (c != null) ? c.getEmail() : "N/A";
+                        String titoloPac = (pac != null) ? pac.getTitolo() : "Pacchetto rimosso";
+
+                        listaPrenotazioniModel.addElement(String.format("%s (%s) - %s", nomeCli, emailCli, titoloPac));
+                    }
+                });
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore fetch: " + ex.getMessage());
+                });
+                return null;
+            });     
+    }
+    
+    private void fetchServizi() {
+        System.out.println("Fetch servizi!");
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/AgenziaViaggiApi/api/servizi"))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .thenAccept(json -> {
+                System.out.printf("%s\n", json);
+                Servizio[] array = gson.fromJson(json, Servizio[].class);
+
+                java.awt.EventQueue.invokeLater(() -> {
+                    listaServizi.clear();
+                    listaServiziModel.clear();
+                    for (Servizio s : array) {
+                        listaServizi.add(s);
+                        listaServiziModel.addElement(s.getNome());
+                    }
+                });
+            })
+            .exceptionally(ex -> {
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Errore fetch: " + ex.getMessage());
+                });
+                return null;
+            }); 
+    }
+    
+    private Cliente findClientePerId(Integer id) {
+        return listaClienti.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Pacchetto findPacchettoPerId(Integer id) {
+        return listaPacchetti.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -606,11 +1504,13 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
     private javax.swing.JButton clearServizio;
     private java.awt.Panel clienti;
     private javax.swing.JList<String> clientiEsistenti;
-    private javax.swing.JTextArea descrizioneServizioTextArea;
-    private javax.swing.JTextArea descrizioneTextArea;
+    private javax.swing.JTextArea descrizionePacchetto;
+    private javax.swing.JTextArea descrizioneServizio;
     private javax.swing.JTextField emailCliente;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JTextField immagineTextField;
+    private javax.swing.JTextField immaginePacchetto;
+    private javax.swing.JTextField immagineServizio;
+    private java.awt.Checkbox isOffertaPacchetto;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -629,15 +1529,16 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList5;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelDescrizionePacchetto;
     private javax.swing.JLabel labelEditPacchetto;
     private javax.swing.JLabel labelListaPacchetti;
@@ -646,27 +1547,29 @@ public class AgenziaViaggiApp extends javax.swing.JFrame {
     private javax.swing.JLabel labelTitoloPacchetto;
     private javax.swing.JLabel labelURLImmaginePacchetto;
     private javax.swing.JTextField nomeCliente;
-    private javax.swing.JTextField nomeTextField;
-    private java.awt.Checkbox offertaCheckboxPacchetto;
+    private javax.swing.JTextField nomeServizio;
     private java.awt.Panel pacchetti;
+    private javax.swing.JList<String> pacchettiEsistenti;
+    private javax.swing.JComboBox<String> pacchettoServizio;
     private javax.swing.JTextField preferenzeCliente;
     private javax.swing.JComboBox<String> prenotazioneCliente;
     private javax.swing.JComboBox<String> prenotazionePacchetto;
     private java.awt.Panel prenotazioni;
     private javax.swing.JList<String> prenotazioniEsistenti;
-    private javax.swing.JSpinner prezzoServizioSpinner;
-    private javax.swing.JSpinner prezzoSpinnerPacchetto;
+    private javax.swing.JSpinner prezzoPacchetto;
+    private javax.swing.JTextField prezzoPagato;
+    private javax.swing.JSpinner prezzoServizio;
     private javax.swing.JButton removeCliente;
     private javax.swing.JButton removePacchetto;
     private javax.swing.JButton removePrenotazione;
     private javax.swing.JButton removeServizio;
     private java.awt.Panel servizi;
-    private javax.swing.JComboBox<String> servizioComboBox;
-    private javax.swing.JTextField servizioImmagineTextField;
+    private javax.swing.JList<String> serviziEsistenti;
     private javax.swing.JTextField statoPrenotazione;
-    private javax.swing.JTextField tagsTextField;
+    private javax.swing.JTabbedPane tabs;
+    private javax.swing.JTextField tagsPacchetto;
     private java.awt.TextField textField4;
-    private javax.swing.JTextField tipoServizioTextField;
-    private javax.swing.JTextField titoloTextField;
+    private javax.swing.JTextField tipoServizio;
+    private javax.swing.JTextField titoloPacchetto;
     // End of variables declaration//GEN-END:variables
 }
